@@ -156,8 +156,11 @@ fi
 
 # Restart services using PM2
 if command -v pm2 &> /dev/null; then
-  echo "Restarting applications with PM2..."
-  pm2 startOrReload ecosystem.config.js
+  echo "Stopping and deleting existing PM2 processes to reset configurations..."
+  pm2 delete luvkush-backend 2>/dev/null || true
+  pm2 delete luvkush-frontend 2>/dev/null || true
+  echo "Starting applications with PM2..."
+  pm2 start ecosystem.config.js
   pm2 save
 else
   echo "PM2 is not installed globally on VPS. Installing PM2..."
