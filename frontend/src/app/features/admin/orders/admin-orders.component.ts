@@ -21,6 +21,16 @@ interface Order {
   item_count?: number;
 }
 
+interface ShippingAddress {
+  full_name?: string;
+  address_line1?: string;
+  address_line2?: string;
+  city?: string;
+  state?: string;
+  pincode?: string;
+  phone?: string;
+}
+
 interface OrderDetail extends Order {
   subtotal: number;
   discount_amount: number;
@@ -29,7 +39,7 @@ interface OrderDetail extends Order {
   coupon_code: string | null;
   coupon_discount: number | null;
   special_instructions: string | null;
-  shipping_address: string | Record<string, any>;
+  shipping_address: string | ShippingAddress;
   user_phone: string;
   items: OrderItem[];
 }
@@ -214,8 +224,8 @@ const ALL_STATUSES = [
                   <div class="dc-title">Payment</div>
                   <div class="dc-val fw">{{ formatPaymentMethod(detailOrder()!.payment_method) }}</div>
                   <span class="badge" [class]="'pay-' + detailOrder()!.payment_status">{{ detailOrder()!.payment_status }}</span>
-                  @if ((detailOrder() as any).coupon_code) {
-                    <div class="dc-val muted" style="margin-top:0.5rem">Coupon: {{ (detailOrder() as any).coupon_code }}</div>
+                  @if (detailOrder()?.coupon_code) {
+                    <div class="dc-val muted" style="margin-top:0.5rem">Coupon: {{ detailOrder()?.coupon_code }}</div>
                   }
                 </div>
               </div>
@@ -234,7 +244,7 @@ const ALL_STATUSES = [
                     </tr>
                   </thead>
                   <tbody>
-                    @for (item of (detailOrder() as any).items || []; track item.id) {
+                    @for (item of detailOrder()?.items || []; track item.id) {
                       <tr>
                         <td>
                           @if (item.primary_image) {
@@ -252,7 +262,7 @@ const ALL_STATUSES = [
                         <td class="fw">₹{{ item.total_amount | number:'1.0-0' }}</td>
                       </tr>
                     }
-                    @if (!((detailOrder() as any).items?.length)) {
+                    @if (!(detailOrder()?.items?.length)) {
                       <tr><td colspan="5" class="empty-cell">No items</td></tr>
                     }
                   </tbody>
@@ -263,12 +273,12 @@ const ALL_STATUSES = [
               <div class="detail-row-2" style="margin-top:1rem">
                 <div class="detail-card summary-card">
                   <div class="dc-title">Order Summary</div>
-                  <div class="summary-row"><span>Subtotal</span><span>₹{{ (detailOrder() as any).subtotal | number:'1.0-0' }}</span></div>
-                  @if ((detailOrder() as any).discount_amount > 0) {
-                    <div class="summary-row green"><span>Discount</span><span>–₹{{ (detailOrder() as any).discount_amount | number:'1.0-0' }}</span></div>
+                  <div class="summary-row"><span>Subtotal</span><span>₹{{ detailOrder()?.subtotal | number:'1.0-0' }}</span></div>
+                  @if ((detailOrder()?.discount_amount ?? 0) > 0) {
+                    <div class="summary-row green"><span>Discount</span><span>–₹{{ detailOrder()?.discount_amount | number:'1.0-0' }}</span></div>
                   }
-                  <div class="summary-row"><span>Shipping</span><span>{{ (detailOrder() as any).shipping_amount > 0 ? '₹' + ((detailOrder() as any).shipping_amount | number:'1.0-0') : 'Free' }}</span></div>
-                  <div class="summary-row"><span>Tax (GST)</span><span>₹{{ (detailOrder() as any).tax_amount | number:'1.0-0' }}</span></div>
+                  <div class="summary-row"><span>Shipping</span><span>{{ (detailOrder()?.shipping_amount ?? 0) > 0 ? '₹' + (detailOrder()?.shipping_amount | number:'1.0-0') : 'Free' }}</span></div>
+                  <div class="summary-row"><span>Tax (GST)</span><span>₹{{ detailOrder()?.tax_amount | number:'1.0-0' }}</span></div>
                   <div class="summary-row total"><span>Grand Total</span><span>₹{{ detailOrder()!.total_amount | number:'1.0-0' }}</span></div>
                 </div>
 
@@ -359,10 +369,10 @@ const ALL_STATUSES = [
               }
 
               <!-- Special instructions -->
-              @if ((detailOrder() as any).special_instructions) {
+              @if (detailOrder()?.special_instructions) {
                 <div class="detail-card" style="margin-top:1rem">
                   <div class="dc-title">Special Instructions</div>
-                  <div class="dc-val">{{ (detailOrder() as any).special_instructions }}</div>
+                  <div class="dc-val">{{ detailOrder()?.special_instructions }}</div>
                 </div>
               }
 
@@ -643,12 +653,12 @@ export class AdminOrdersComponent implements OnInit {
     return ids.length > 0 && ids.every(id => sel.has(id));
   });
 
-  readonly shippingAddr = computed<Record<string, any> | null>(() => {
+  readonly shippingAddr = computed<ShippingAddress | null>(() => {
     const d = this.detailOrder();
     if (!d) return null;
     try {
       const raw = d.shipping_address;
-      return typeof raw === 'string' ? JSON.parse(raw) : (raw as Record<string, any>);
+      return typeof raw === 'string' ? JSON.parse(raw) : (raw as ShippingAddress);
     } catch { return null; }
   });
 
