@@ -1,0 +1,150 @@
+<div class="admin-dashboard">
+
+  <!-- Header -->
+  <div class="admin-dashboard__header">
+    <div>
+      <h1 class="admin-dashboard__title">Dashboard</h1>
+      <p class="admin-dashboard__date">{{ today }}</p>
+    </div>
+    <div class="admin-dashboard__actions">
+      <button class="admin-btn admin-btn--ghost">Export Report</button>
+      <button class="admin-btn admin-btn--primary">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M7 1V13M1 7H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        Add Product
+      </button>
+    </div>
+  </div>
+
+  <!-- Stat Cards -->
+  <div class="admin-stats">
+    @for (stat of stats; track stat.label) {
+      <div class="admin-stat-card">
+        <div class="admin-stat-card__icon">
+          @switch (stat.icon) {
+            @case ('revenue') {
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.3"/>
+                <path d="M10 5V7M10 13V15M7.5 8C7.5 7.2 8.6 6.5 10 6.5C11.4 6.5 12.5 7.2 12.5 8C12.5 9 11 9.5 10 10C9 10.5 7.5 11 7.5 12C7.5 12.8 8.6 13.5 10 13.5C11.4 13.5 12.5 12.8 12.5 12"
+                  stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+              </svg>
+            }
+            @case ('orders') {
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M3 5H17M5 5L6 17H14L15 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                <path d="M8 9V13M12 9V13" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+              </svg>
+            }
+            @case ('customers') {
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <circle cx="10" cy="7" r="4" stroke="currentColor" stroke-width="1.3"/>
+                <path d="M2 18C2 15 5.6 13 10 13C14.4 13 18 15 18 18" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+              </svg>
+            }
+            @default {
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M10 2L18 7V13L10 18L2 13V7L10 2Z" stroke="currentColor" stroke-width="1.3" fill="none"/>
+              </svg>
+            }
+          }
+        </div>
+        <div class="admin-stat-card__body">
+          <span class="admin-stat-card__label">{{ stat.label }}</span>
+          <span class="admin-stat-card__value">{{ stat.value }}</span>
+          <span class="admin-stat-card__change"
+            [class.admin-stat-card__change--positive]="stat.positive"
+            [class.admin-stat-card__change--negative]="!stat.positive">
+            {{ stat.change }}
+          </span>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Main Grid -->
+  <div class="admin-dashboard__grid">
+
+    <!-- Revenue Chart -->
+    <div class="admin-card admin-card--chart">
+      <div class="admin-card__header">
+        <h2 class="admin-card__title">Revenue Overview</h2>
+        <div class="admin-card__actions">
+          <button class="admin-pill admin-pill--active">Monthly</button>
+          <button class="admin-pill">Weekly</button>
+        </div>
+      </div>
+      <div class="admin-chart-wrap">
+        <canvas id="revenueChart" class="admin-chart"></canvas>
+      </div>
+      <div class="admin-chart-summary">
+        <div class="admin-chart-summary__item">
+          <span class="admin-chart-summary__label">This Month</span>
+          <span class="admin-chart-summary__value">₹1,25,000</span>
+        </div>
+        <div class="admin-chart-summary__item">
+          <span class="admin-chart-summary__label">Last Month</span>
+          <span class="admin-chart-summary__value">₹1,08,000</span>
+        </div>
+        <div class="admin-chart-summary__item">
+          <span class="admin-chart-summary__label">Growth</span>
+          <span class="admin-chart-summary__value admin-chart-summary__value--positive">+15.7%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top Products -->
+    <div class="admin-card">
+      <div class="admin-card__header">
+        <h2 class="admin-card__title">Top Products</h2>
+        <a class="admin-link" routerLink="/admin/products">View all</a>
+      </div>
+      <div class="admin-top-products">
+        @for (product of topProducts; track product.name; let i = $index) {
+          <div class="admin-top-product">
+            <div class="admin-top-product__rank">{{ i + 1 }}</div>
+            <div class="admin-top-product__info">
+              <span class="admin-top-product__name">{{ product.name }}</span>
+              <span class="admin-top-product__sales">{{ product.sales }} units</span>
+            </div>
+            <div class="admin-top-product__right">
+              <span class="admin-top-product__revenue">{{ product.revenue }}</span>
+              <span class="admin-top-product__trend">{{ product.trend }}</span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Recent Orders -->
+    <div class="admin-card admin-card--full">
+      <div class="admin-card__header">
+        <h2 class="admin-card__title">Recent Orders</h2>
+        <a class="admin-link" routerLink="/admin/orders">View all</a>
+      </div>
+      <div class="admin-orders-table">
+        <div class="admin-table-head">
+          <span>Order ID</span>
+          <span>Customer</span>
+          <span>Product</span>
+          <span>Amount</span>
+          <span>Status</span>
+          <span>Date</span>
+        </div>
+        @for (order of recentOrders; track order.id) {
+          <div class="admin-table-row">
+            <span class="admin-table-id">{{ order.id }}</span>
+            <span class="admin-table-customer">{{ order.customer }}</span>
+            <span class="admin-table-product">{{ order.product }}</span>
+            <span class="admin-table-amount">₹{{ order.amount.toLocaleString('en-IN') }}</span>
+            <span class="admin-status admin-status--{{ order.status }}">
+              {{ order.status | titlecase }}
+            </span>
+            <span class="admin-table-date">{{ order.date }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+  </div>
+</div>

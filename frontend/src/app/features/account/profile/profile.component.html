@@ -1,0 +1,39 @@
+<div class="ac">
+  <lk-account-nav />
+  <div class="ac-content">
+    <h1 class="ac-page-title">Edit Profile</h1>
+    <div class="ac-card">
+      <form [formGroup]="form" (ngSubmit)="onSave()" novalidate>
+        <div class="pf-row">
+          <div class="pf-field">
+            <label class="pf-label" for="pf-fn">First name</label>
+            <input id="pf-fn" type="text" formControlName="first_name" class="pf-input"
+              [class.pf-input--invalid]="submitted && f.first_name.invalid" placeholder="First name" />
+            @if (submitted && f.first_name.invalid) { <span class="pf-error">Required</span> }
+          </div>
+          <div class="pf-field">
+            <label class="pf-label" for="pf-ln">Last name</label>
+            <input id="pf-ln" type="text" formControlName="last_name" class="pf-input"
+              [class.pf-input--invalid]="submitted && f.last_name.invalid" placeholder="Last name" />
+            @if (submitted && f.last_name.invalid) { <span class="pf-error">Required</span> }
+          </div>
+        </div>
+        <div class="pf-field">
+          <label class="pf-label">Email address</label>
+          <input type="email" [value]="auth.user()?.email ?? ''" class="pf-input pf-input--disabled" disabled />
+          <span class="pf-hint">Email cannot be changed</span>
+        </div>
+        <div class="pf-field">
+          <label class="pf-label" for="pf-ph">Mobile number</label>
+          <input id="pf-ph" type="tel" formControlName="phone" class="pf-input" placeholder="10-digit mobile" inputmode="numeric" />
+          @if (submitted && f.phone.invalid) { <span class="pf-error">Enter a valid 10-digit mobile number</span> }
+        </div>
+        <div class="pf-actions">
+          <button type="submit" class="pf-save" [disabled]="saving()">
+            @if (saving()) { Saving… } @else { Save Changes }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

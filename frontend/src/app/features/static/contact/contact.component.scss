@@ -1,0 +1,214 @@
+@use "../../../../styles/variables" as *;
+
+// ─── Shared ───────────────────────────────────────────────────
+.ct-eyebrow,
+.ct-section-eyebrow {
+  font-family: $font-display;
+  font-size: $fs-xs;
+  letter-spacing: $ls-widest;
+  text-transform: uppercase;
+  color: $color-copper-gold;
+  margin: 0 0 0.875rem;
+}
+
+.ct-section-title {
+  font-family: $font-heading;
+  font-size: clamp(1.875rem, 4vw, 2.5rem);
+  font-weight: 600;
+  color: $color-forest-deep;
+  line-height: 1.2;
+  margin: 0 0 2rem;
+}
+
+// ─── Hero ─────────────────────────────────────────────────────
+.ct-hero {
+  background: linear-gradient(135deg, $color-forest-deep 0%, $color-ayurvedic-green 100%);
+  padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem);
+}
+
+.ct-hero__inner { max-width: 600px; }
+
+.ct-hero__title {
+  font-family: $font-heading;
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  font-weight: 500;
+  color: $color-ivory-warm;
+  line-height: 1.15;
+  margin: 0 0 1rem;
+}
+
+.ct-hero__sub {
+  font-family: $font-body;
+  font-size: 1rem;
+  color: rgba($color-ivory-warm, 0.7);
+  line-height: 1.75;
+  margin: 0;
+  max-width: 480px;
+}
+
+// ─── Cards Section ────────────────────────────────────────────
+.ct-section {
+  background: $color-warm-sand;
+  padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem);
+}
+
+.ct-section__inner { max-width: 900px; margin: 0 auto; }
+
+.ct-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 1.75rem;
+
+  @media (max-width: $bp-md) { grid-template-columns: 1fr; max-width: 480px; }
+}
+
+.ct-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  padding: 1.75rem 1.5rem;
+  background: $color-white;
+  border: 1px solid rgba($color-copper-gold, 0.15);
+  border-radius: 16px;
+  text-decoration: none;
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.28s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba($color-forest-deep, 0.1);
+  }
+
+  &--primary {
+    background: linear-gradient(145deg, #128C7E 0%, #25D366 100%);
+    border-color: transparent;
+    box-shadow: 0 6px 24px rgba(18, 140, 126, 0.2);
+
+    .ct-card__label, .ct-card__note { color: rgba($color-white, 0.72); }
+    .ct-card__value, .ct-card__action { color: $color-white; }
+  }
+
+  &__icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &--whatsapp { background: rgba($color-white, 0.2); color: $color-white; }
+    &--email    { background: rgba($color-copper-gold, 0.1); color: $color-copper-gold; }
+    &--phone    { background: rgba($color-herbal-green, 0.1); color: $color-herbal-green; }
+  }
+
+  &__body { flex: 1; }
+
+  &__label {
+    font-family: $font-body;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: $color-text-muted;
+    margin: 0 0 0.25rem;
+  }
+
+  &__value {
+    font-family: $font-body;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: $color-text-primary;
+    margin: 0 0 0.25rem;
+    word-break: break-all;
+  }
+
+  &__note {
+    font-family: $font-body;
+    font-size: 0.75rem;
+    color: $color-text-muted;
+    margin: 0;
+  }
+
+  &__action {
+    font-family: $font-body;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: $color-herbal-green;
+    margin-top: auto;
+  }
+}
+
+.ct-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: rgba($color-herbal-green, 0.08);
+  border: 1px solid rgba($color-herbal-green, 0.2);
+  border-radius: 10px;
+
+  svg { color: $color-herbal-green; flex-shrink: 0; margin-top: 0.125rem; }
+
+  p {
+    font-family: $font-body;
+    font-size: 0.875rem;
+    color: $color-text-secondary;
+    line-height: 1.6;
+    margin: 0;
+    strong { color: $color-forest-deep; }
+  }
+}
+
+// ─── Business Details ─────────────────────────────────────────
+.ct-details {
+  background: $color-white;
+  padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem);
+}
+
+.ct-details__inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+
+  @media (max-width: $bp-md) { grid-template-columns: 1fr; gap: 2rem; }
+}
+
+.ct-detail-block__title {
+  font-family: $font-heading;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: $color-forest-deep;
+  margin: 0 0 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid $color-border-light;
+}
+
+.ct-dl {
+  dt {
+    font-family: $font-body;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: $color-text-muted;
+    margin-bottom: 0.25rem;
+  }
+
+  dd {
+    font-family: $font-body;
+    font-size: 0.9375rem;
+    color: $color-text-secondary;
+    margin: 0 0 1rem;
+  }
+}
+
+.ct-address {
+  font-family: $font-body;
+  font-size: 0.9375rem;
+  color: $color-text-secondary;
+  line-height: 1.85;
+  font-style: normal;
+}

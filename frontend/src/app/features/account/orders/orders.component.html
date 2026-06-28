@@ -1,0 +1,53 @@
+<div class="ac">
+  <lk-account-nav />
+  <div class="ac-content">
+    <h1 class="ac-page-title">My Orders</h1>
+
+    @if (loading()) {
+      <div class="ord-list">
+        @for (_ of [1,2,3]; track $index) {
+          <div class="shimmer" style="height:100px;border-radius:10px;margin-bottom:1rem"></div>
+        }
+      </div>
+    } @else if (orders().length === 0) {
+      <div class="ac-empty">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <h3>No orders yet</h3>
+        <p>When you place an order, it will appear here</p>
+        <a routerLink="/shop" class="ac-empty__cta">Shop Now</a>
+      </div>
+    } @else {
+      <div class="ord-list">
+        @for (order of orders(); track order.id) {
+          <div class="ord-card">
+            <div class="ord-card__head">
+              <div>
+                <p class="ord-card__num">Order #{{ order.order_number }}</p>
+                <p class="ord-card__date">{{ order.created_at | date:'MMM d, y' }}</p>
+              </div>
+              <div class="ord-card__right">
+                <span class="ord-status" [class]="STATUS_COLOR[order.status] ?? 'status--pending'">{{ order.status | titlecase }}</span>
+                <p class="ord-card__total">₹{{ order.total_amount | number:'1.0-0' }}</p>
+              </div>
+            </div>
+            <div class="ord-card__items">
+              @for (item of (order.items ?? []).slice(0, 3); track item.id) {
+                <img [src]="imgUrl(item.primary_image) || '/assets/images/placeholder.webp'" [alt]="item.name" class="ord-card__img" loading="lazy" />
+              }
+              @if ((order.items?.length ?? 0) > 3) {
+                <span class="ord-card__more">+{{ (order.items?.length ?? 0) - 3 }}</span>
+              }
+            </div>
+            <div class="ord-card__footer">
+              <span class="ord-card__item-count">{{ order.items?.length ?? 0 }} item{{ order.items?.length === 1 ? '' : 's' }}</span>
+              <a [routerLink]="['/account/orders', order.id]" class="ord-card__detail-link">
+                View Details
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

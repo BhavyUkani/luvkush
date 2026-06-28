@@ -1,0 +1,331 @@
+@use "../../../../styles/variables" as *;
+
+// ─── Shared Utility ───────────────────────────────────────────
+.ab-section-eyebrow {
+  font-family: $font-display;
+  font-size: $fs-xs;
+  letter-spacing: $ls-widest;
+  text-transform: uppercase;
+  color: $color-copper-gold;
+  margin: 0 0 0.875rem;
+
+  &--light { color: rgba($color-ivory-warm, 0.65); }
+}
+
+.ab-section-title {
+  font-family: $font-heading;
+  font-size: clamp(1.875rem, 4vw, 2.75rem);
+  font-weight: 600;
+  color: $color-forest-deep;
+  line-height: 1.2;
+  margin: 0 0 1.5rem;
+
+  &--light { color: $color-ivory-warm; }
+}
+
+// ─── Hero ─────────────────────────────────────────────────────
+.ab-hero {
+  background: linear-gradient(135deg, $color-forest-deep 0%, $color-ayurvedic-green 100%);
+  padding: clamp(3.5rem, 7vw, 5.5rem) clamp(1.5rem, 5vw, 4rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: -80px;
+    right: 15%;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba($color-copper-gold, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+}
+
+.ab-hero__inner { max-width: 680px; position: relative; z-index: 1; }
+
+.ab-hero__eyebrow {
+  font-family: $font-display;
+  font-size: $fs-xs;
+  letter-spacing: $ls-widest;
+  text-transform: uppercase;
+  color: rgba($color-copper-gold, 0.8);
+  margin: 0 0 1rem;
+}
+
+.ab-hero__title {
+  font-family: $font-heading;
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  font-weight: 500;
+  color: $color-ivory-warm;
+  line-height: 1.15;
+  margin: 0 0 1.125rem;
+  letter-spacing: -0.01em;
+}
+
+.ab-hero__sub {
+  font-family: $font-body;
+  font-size: 1.0625rem;
+  color: rgba($color-ivory-warm, 0.72);
+  line-height: 1.75;
+  margin: 0;
+  max-width: 520px;
+}
+
+.ab-hero__leaf {
+  font-size: 5rem;
+  opacity: 0.15;
+  flex-shrink: 0;
+  margin-left: 2rem;
+  line-height: 1;
+}
+
+// ─── Brand Story ──────────────────────────────────────────────
+.ab-story {
+  background: $color-white;
+  padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem);
+}
+
+.ab-story__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4rem;
+  align-items: center;
+
+  @media (max-width: $bp-md) {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+.ab-story__text {
+  p {
+    font-family: $font-body;
+    font-size: 1rem;
+    color: $color-text-secondary;
+    line-height: 1.8;
+    margin: 0 0 1.125rem;
+  }
+}
+
+.ab-story__visual { text-align: center; }
+
+.ab-story__badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, $color-forest-deep 0%, $color-ayurvedic-green 100%);
+  box-shadow: 0 12px 40px rgba($color-forest-deep, 0.25);
+
+  @media (max-width: $bp-md) {
+    width: 130px;
+    height: 130px;
+    margin: 0 auto;
+  }
+}
+
+.ab-story__badge-num {
+  font-family: $font-heading;
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: $color-gold-light;
+  line-height: 1;
+  display: block;
+}
+
+.ab-story__badge-label {
+  font-family: $font-body;
+  font-size: 0.6875rem;
+  color: rgba($color-ivory-warm, 0.7);
+  text-align: center;
+  line-height: 1.4;
+  margin-top: 0.375rem;
+  display: block;
+}
+
+// ─── Mission ──────────────────────────────────────────────────
+.ab-mission {
+  background: linear-gradient(160deg, $color-forest-deep 0%, #1a3024 100%);
+  padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem);
+}
+
+.ab-mission__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.ab-mission__header { margin-bottom: 2rem; }
+
+.ab-mission__quote {
+  border-left: 3px solid $color-copper-gold;
+  padding: 1.25rem 1.75rem;
+  margin-bottom: 2.5rem;
+  background: rgba($color-white, 0.04);
+  border-radius: 0 10px 10px 0;
+
+  p {
+    font-family: $font-heading;
+    font-size: clamp(1.1rem, 2.5vw, 1.375rem);
+    font-style: italic;
+    color: rgba($color-ivory-warm, 0.9);
+    line-height: 1.65;
+    margin: 0;
+  }
+}
+
+.ab-values {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+
+  @media (max-width: $bp-lg)  { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: $bp-sm)  { grid-template-columns: 1fr; }
+}
+
+.ab-value {
+  background: rgba($color-white, 0.05);
+  border: 1px solid rgba($color-copper-gold, 0.18);
+  border-radius: 14px;
+  padding: 1.5rem 1.25rem;
+  text-align: center;
+  transition: background 0.25s ease, transform 0.25s ease;
+
+  &:hover {
+    background: rgba($color-white, 0.09);
+    transform: translateY(-2px);
+  }
+
+  &__icon { font-size: 2rem; display: block; margin-bottom: 0.875rem; }
+
+  &__title {
+    font-family: $font-heading;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: $color-ivory-warm;
+    margin: 0 0 0.5rem;
+  }
+
+  &__desc {
+    font-family: $font-body;
+    font-size: 0.8125rem;
+    color: rgba($color-ivory-warm, 0.6);
+    line-height: 1.65;
+    margin: 0;
+  }
+}
+
+// ─── Range ────────────────────────────────────────────────────
+.ab-range {
+  background: $color-warm-sand;
+  padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem);
+}
+
+.ab-range__inner { max-width: 1100px; margin: 0 auto; }
+
+.ab-range__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+
+  @media (max-width: $bp-lg)  { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: $bp-sm)  { grid-template-columns: 1fr; }
+}
+
+.ab-range__card {
+  background: $color-white;
+  border: 1px solid rgba($color-copper-gold, 0.15);
+  border-radius: 14px;
+  padding: 1.75rem 1.5rem;
+  text-align: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: $shadow-md;
+  }
+
+  h3 {
+    font-family: $font-heading;
+    font-size: 1.1875rem;
+    font-weight: 600;
+    color: $color-forest-deep;
+    margin: 0.75rem 0 0.625rem;
+  }
+
+  p {
+    font-family: $font-body;
+    font-size: 0.875rem;
+    color: $color-text-secondary;
+    line-height: 1.65;
+    margin: 0;
+  }
+}
+
+.ab-range__icon { font-size: 2.25rem; display: block; }
+
+// ─── Promise ──────────────────────────────────────────────────
+.ab-promise {
+  background: $color-white;
+  padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem);
+}
+
+.ab-promise__inner {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.ab-promise__body {
+  font-family: $font-body;
+  font-size: 1rem;
+  color: $color-text-secondary;
+  line-height: 1.8;
+  margin: 0 0 2rem;
+}
+
+.ab-promise__badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.625rem;
+  margin-bottom: 2rem;
+}
+
+.ab-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
+  background: $color-warm-sand;
+  border: 1px solid $color-warm-sand-dark;
+  border-radius: 99px;
+  font-family: $font-body;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: $color-forest-deep;
+}
+
+.ab-promise__contact {
+  font-family: $font-body;
+  font-size: 0.9375rem;
+  color: $color-text-secondary;
+  margin: 0;
+
+  a {
+    color: $color-herbal-green;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.18s;
+    &:hover { color: $color-forest-deep; }
+  }
+}

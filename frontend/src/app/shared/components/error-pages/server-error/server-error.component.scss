@@ -1,0 +1,30 @@
+@use "../../../../../styles/variables" as *;
+
+.ep-page {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 1.5rem;
+}
+
+.ep-icon { font-size: 4rem; margin-bottom: 1rem; }
+.ep-code { font-size: 5rem; font-weight: 800; color: $color-herbal-green; margin: 0 0 0.25rem; line-height: 1; }
+.ep-title { font-size: 1.5rem; font-weight: 600; color: $color-text-primary; margin: 0 0 0.75rem; }
+.ep-desc  { font-size: 1rem; color: $color-text-muted; max-width: 420px; line-height: 1.6; margin: 0 0 2.5rem; }
+
+.ep-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+
+.ep-btn {
+  padding: 0.875rem 2rem;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.18s;
+
+  &--primary { background: $color-herbal-green; color: $color-white; &:hover { opacity: 0.88; } }
+  &--secondary { border: 1.5px solid $color-border-base; color: $color-text-primary; &:hover { border-color: $color-herbal-green; color: $color-herbal-green; } }
+}

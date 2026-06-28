@@ -1,0 +1,264 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.pc {
+  display: flex;
+  flex-direction: column;
+  background: $color-white;
+  border: 1px solid $color-border-base;
+  border-radius: $radius-md;
+  overflow: hidden;
+  transition: box-shadow 240ms ease, transform 240ms ease;
+
+  &:hover {
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.11);
+    transform: translateY(-4px);
+
+    .pc__image--primary { opacity: 0; }
+    .pc__image--hover   { opacity: 1; transform: scale(1.03); }
+    .pc__image--primary:only-child { opacity: 1; transform: scale(1.04); }
+    .pc__wish  { opacity: 1; transform: translate(0, 0); }
+  }
+
+  // ── Image ───────────────────────────────────────────────────
+  &__image-wrap {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: $color-bg-subtle;
+    flex-shrink: 0;
+  }
+
+  &__image-link { display: block; width: 100%; height: 100%; position: relative; }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition: transform 400ms ease, opacity 280ms ease;
+
+    &--primary {
+      position: relative;
+      z-index: 1;
+    }
+
+    &--hover {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      opacity: 0;
+      transform: scale(1.06);
+      transition: opacity 300ms ease, transform 400ms ease;
+    }
+  }
+
+  // ── Badges ──────────────────────────────────────────────────
+  &__badges {
+    position: absolute;
+    top: $space-2;
+    left: $space-2;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    z-index: 1;
+  }
+
+  &__badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: $radius-pill;
+    font-family: $font-ui;
+    font-size: 10px;
+    font-weight: $fw-bold;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: 1.4;
+
+    &--bs    { background: $color-sandalwood; color: $color-white; }
+    &--new   { background: $color-herbal-green; color: $color-white; }
+    &--sale  { background: #FEF0E6; color: $color-saffron; border: 1px solid rgba($color-saffron, 0.2); }
+    &--stock { background: #FFF3CD; color: #92400E; border: 1px solid rgba(#92400E, 0.2); animation: stockPulse 2s ease-in-out infinite; }
+  }
+
+  // ── Wishlist ─────────────────────────────────────────────────
+  &__wish {
+    position: absolute;
+    top: $space-2;
+    right: $space-2;
+    z-index: 3;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba($color-white, 0.92);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    color: $color-text-muted;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.12);
+    opacity: 0;
+    transform: translate(4px, -4px);
+    transition: opacity 200ms ease, transform 200ms ease, color 150ms ease, background 150ms ease;
+
+    &--active {
+      color: #E53E3E;
+      opacity: 1;
+      transform: translate(0, 0);
+      animation: heartPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    &:hover { color: #E53E3E; background: rgba($color-white, 1); }
+  }
+
+  // ── Info ─────────────────────────────────────────────────────
+  &__info {
+    padding: $space-3 $space-3 $space-2;
+    display: flex;
+    flex-direction: column;
+    gap: $space-1;
+    flex: 1;
+    min-height: 0;
+  }
+
+  &__category {
+    font-family: $font-ui;
+    font-size: 10px;
+    font-weight: $fw-semibold;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: $color-herbal-green;
+  }
+
+  &__name-link { text-decoration: none; color: inherit; }
+
+  &__name {
+    font-family: $font-body;
+    font-size: $fs-sm;
+    font-weight: $fw-semibold;
+    color: $color-text-primary;
+    line-height: 1.35;
+    @include truncate(2);
+    margin: 0;
+  }
+
+  // ── Rating ───────────────────────────────────────────────────
+  &__rating {
+    display: flex;
+    align-items: center;
+    gap: $space-1;
+    margin-top: 2px;
+  }
+
+  &__stars { display: flex; gap: 1px; }
+
+  &__star {
+    color: $color-border-strong;
+    &--on { color: $color-turmeric; }
+  }
+
+  &__rating-count {
+    font-family: $font-ui;
+    font-size: 10px;
+    color: $color-text-muted;
+  }
+
+  // ── Price ────────────────────────────────────────────────────
+  &__price-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: $space-2;
+    margin-top: auto;
+    padding-top: $space-1;
+  }
+
+  &__price {
+    font-family: $font-body;
+    font-size: $fs-base;
+    font-weight: $fw-bold;
+    color: $color-text-primary;
+  }
+
+  &__mrp {
+    font-family: $font-body;
+    font-size: $fs-xs;
+    color: $color-text-muted;
+    text-decoration: line-through;
+  }
+
+  &__discount {
+    font-family: $font-ui;
+    font-size: 10px;
+    font-weight: $fw-bold;
+    color: $color-herbal-green;
+    background: rgba($color-herbal-green, 0.1);
+    padding: 2px 6px;
+    border-radius: $radius-pill;
+  }
+
+  // ── Payment label ─────────────────────────────────────────────
+  &__payment-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: $font-ui;
+    font-size: 10px;
+    font-weight: $fw-medium;
+    color: $color-herbal-green;
+    letter-spacing: 0.02em;
+    margin-top: 2px;
+    svg { flex-shrink: 0; }
+  }
+
+  // ── Cart Button ───────────────────────────────────────────────
+  &__cart {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $space-2;
+    margin: 0 $space-3 $space-3;
+    padding: $space-2 $space-3;
+    background: $color-herbal-green;
+    color: $color-white;
+    border: none;
+    border-radius: $radius-sm;
+    font-family: $font-ui;
+    font-size: $fs-xs;
+    font-weight: $fw-semibold;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 160ms ease, transform 120ms ease;
+
+    &:hover  { background: $color-forest; }
+    &:active { transform: scale(0.97); }
+
+    &--added {
+      background: #38A169 !important;
+      pointer-events: none;
+      animation: cartAdded 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+  }
+}
+
+// ── Keyframes ──────────────────────────────────────────────────
+@keyframes heartPop {
+  0%   { transform: translate(0,0) scale(1); }
+  40%  { transform: translate(0,0) scale(1.35); }
+  70%  { transform: translate(0,0) scale(0.9); }
+  100% { transform: translate(0,0) scale(1); }
+}
+
+@keyframes cartAdded {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(0.94); }
+  100% { transform: scale(1); }
+}
+
+@keyframes stockPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.7; }
+}

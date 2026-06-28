@@ -1,0 +1,51 @@
+@use "../../../../styles/variables" as *;
+@use "../account-shared";
+
+.wl-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.wl-skeleton {
+  height: 320px;
+  border-radius: 10px;
+  background: $color-bg-subtle;
+}
+
+.wl-item {
+  display: flex;
+  flex-direction: column;
+
+  &__actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  &__cart {
+    flex: 1;
+    padding: 0.5rem 0;
+    background: $color-herbal-green;
+    color: $color-white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.18s;
+    &:hover { opacity: 0.88; }
+  }
+
+  &__remove {
+    padding: 0.5rem 0.75rem;
+    background: none;
+    border: 1.5px solid $color-border-base;
+    border-radius: 6px;
+    font-size: 0.8125rem;
+    color: $color-text-muted;
+    cursor: pointer;
+    transition: border-color 0.18s, color 0.18s;
+    &:hover { border-color: #E53E3E; color: #E53E3E; }
+  }
+}

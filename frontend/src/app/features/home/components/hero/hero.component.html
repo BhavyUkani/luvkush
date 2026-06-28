@@ -1,0 +1,217 @@
+<section class="hero" aria-label="Featured products">
+
+  @if (loading()) {
+    <div class="hero__skeleton">
+      <div class="hero__skel-left">
+        <div class="skel-block" style="width:80px;height:20px;border-radius:20px;margin-bottom:16px"></div>
+        <div class="skel-block" style="width:100%;height:32px;margin-bottom:8px"></div>
+        <div class="skel-block" style="width:70%;height:32px;margin-bottom:20px"></div>
+        <div class="skel-block" style="width:120px;height:16px;margin-bottom:20px"></div>
+        <div class="skel-block" style="width:160px;height:40px;margin-bottom:32px"></div>
+        <div class="skel-block" style="width:200px;height:48px"></div>
+      </div>
+      <div class="hero__skel-right">
+        <div class="skel-block" style="width:100%;height:100%;border-radius:12px"></div>
+      </div>
+    </div>
+  }
+
+  @if (!loading() && products().length > 0) {
+    @if (swiperReady()) {
+      <swiper-container
+        slides-per-view="1"
+        loop="true"
+        autoplay-delay="5000"
+        autoplay-disable-on-interaction="false"
+        pagination="true"
+        pagination-clickable="true"
+        navigation="true"
+      >
+        @for (product of products(); track product.id) {
+          <swiper-slide>
+            <div class="hero__inner">
+
+              <!-- Left: Product Info -->
+              <div class="hero__copy">
+
+                <!-- Category + bestseller chip -->
+                <div class="hero__chips">
+                  @if (product.is_bestseller) {
+                    <span class="hero__chip hero__chip--bs">
+                      <svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                        <path d="M6 1L7.2 4.2H10.6L7.9 6.1L8.9 9.4L6 7.5L3.1 9.4L4.1 6.1L1.4 4.2H4.8L6 1Z"
+                          fill="currentColor"/>
+                      </svg>
+                      Bestseller
+                    </span>
+                  }
+                  @if (product.category_name) {
+                    <span class="hero__chip hero__chip--cat">{{ product.category_name }}</span>
+                  }
+                </div>
+
+                <!-- Product Name -->
+                <h1 class="hero__name">{{ product.name }}</h1>
+
+                @if (product.subtitle) {
+                  <p class="hero__subtitle">{{ product.subtitle }}</p>
+                }
+
+                <!-- Rating -->
+                @if ((product.rating_count ?? 0) > 0) {
+                  <div class="hero__rating" [attr.aria-label]="(product.rating_avg ?? 0) + ' out of 5 stars'">
+                    <div class="hero__stars" role="img">
+                      @for (s of [1,2,3,4,5]; track s) {
+                        <svg class="hero__star" [class.hero__star--on]="s <= getRatingInt(product)"
+                          width="14" height="14" viewBox="0 0 12 12" fill="none">
+                          <path d="M6 1L7.2 4.2H10.6L7.9 6.1L8.9 9.4L6 7.5L3.1 9.4L4.1 6.1L1.4 4.2H4.8L6 1Z"
+                            stroke="currentColor" stroke-width="0.7"
+                            [attr.fill]="s <= getRatingInt(product) ? 'currentColor' : 'none'"/>
+                        </svg>
+                      }
+                    </div>
+                    <span class="hero__rating-val">{{ product.rating_avg | number:'1.1-1' }}</span>
+                    <span class="hero__rating-count">({{ product.rating_count }} reviews)</span>
+                  </div>
+                }
+
+                <!-- Price Row -->
+                <div class="hero__price-row">
+                  <span class="hero__price">₹{{ product.price | number:'1.0-0' }}</span>
+                  @if (product.mrp && product.mrp > product.price) {
+                    <span class="hero__mrp">₹{{ product.mrp | number:'1.0-0' }}</span>
+                  }
+                  @if (getDiscount(product) >= 10) {
+                    <span class="hero__discount-badge">{{ getDiscount(product) }}% off</span>
+                  }
+                </div>
+
+                <!-- CTAs -->
+                <div class="hero__ctas">
+                  <button class="hero__btn-cart" [class.hero__btn-cart--added]="addedProductIds().has(product.id)"
+                    (click)="addToCart(product)" [disabled]="addedProductIds().has(product.id)">
+                    @if (addedProductIds().has(product.id)) {
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                        <path d="M2 7L5.5 10.5L12 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      Added to Cart
+                    } @else {
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                        <path d="M1 1H2.5L4.5 10H11.5L13 5H4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="5.5" cy="12" r="1" fill="currentColor"/>
+                        <circle cx="10.5" cy="12" r="1" fill="currentColor"/>
+                      </svg>
+                      Add to Cart
+                    }
+                  </button>
+                  <a class="hero__btn-view" [routerLink]="['/products', product.slug]">View Product</a>
+                  <button class="hero__btn-wish"
+                    [class.hero__btn-wish--active]="wishlist.isWishlisted(product.id)"
+                    (click)="toggleWishlist(product)"
+                    [attr.aria-label]="wishlist.isWishlisted(product.id) ? 'Remove from wishlist' : 'Add to wishlist'">
+                    <svg width="16" height="16" viewBox="0 0 18 18" fill="none">
+                      <path d="M9 15.5S2 11 2 6.5A4 4 0 0 1 9 4.5 4 4 0 0 1 16 6.5C16 11 9 15.5 9 15.5Z"
+                        stroke="currentColor" stroke-width="1.4"
+                        [attr.fill]="wishlist.isWishlisted(product.id) ? 'currentColor' : 'none'"/>
+                    </svg>
+                  </button>
+                </div>
+
+                <!-- Trust badges -->
+                <div class="hero__trust">
+                  <div class="hero__trust-item">
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/>
+                      <path d="M5.5 8L7 9.5L10.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Ayurvedic Certified
+                  </div>
+                  <div class="hero__trust-item">
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path d="M8 1C8 1 4 5 2 8C4 11 8 15 8 15C8 15 12 11 14 8C12 5 8 1 8 1Z" stroke="currentColor" stroke-width="1.2" fill="none"/>
+                    </svg>
+                    100% Natural
+                  </div>
+                  <div class="hero__trust-item">
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path d="M2 10L8 14L14 10V6L8 2L2 6V10Z" stroke="currentColor" stroke-width="1.2" fill="none"/>
+                      <path d="M2 6L8 10L14 6" stroke="currentColor" stroke-width="1.2"/>
+                    </svg>
+                    Free Delivery ₹499+
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right: Product Image -->
+              <div class="hero__image-panel">
+                <div class="hero__image-wrap">
+                  <img
+                    class="hero__image"
+                    [src]="imgUrl(product.primary_image) || '/assets/images/placeholder.webp'"
+                    [alt]="product.name"
+                    width="600"
+                    height="600"
+                    (error)="$any($event.target).src='/assets/images/placeholder.webp'"
+                  />
+                </div>
+              </div>
+
+            </div>
+          </swiper-slide>
+        }
+      </swiper-container>
+    } @else {
+      <!-- Static SSR / Hydration Fallback (first product) -->
+      @if (products()[0]; as product) {
+        <div class="hero__inner">
+          <!-- Left: Product Info -->
+          <div class="hero__copy">
+            <div class="hero__chips">
+              @if (product.is_bestseller) {
+                <span class="hero__chip hero__chip--bs">Bestseller</span>
+              }
+              @if (product.category_name) {
+                <span class="hero__chip hero__chip--cat">{{ product.category_name }}</span>
+              }
+            </div>
+            <h1 class="hero__name">{{ product.name }}</h1>
+            @if (product.subtitle) {
+              <p class="hero__subtitle">{{ product.subtitle }}</p>
+            }
+            <div class="hero__price-row">
+              <span class="hero__price">₹{{ product.price | number:'1.0-0' }}</span>
+            </div>
+            <div class="hero__ctas">
+              <a class="hero__btn-cart" [routerLink]="['/products', product.slug]">View Product</a>
+            </div>
+          </div>
+          <!-- Right: Product Image -->
+          <div class="hero__image-panel">
+            <div class="hero__image-wrap">
+              <img
+                class="hero__image"
+                [src]="imgUrl(product.primary_image) || '/assets/images/placeholder.webp'"
+                [alt]="product.name"
+                width="600"
+                height="600"
+              />
+            </div>
+          </div>
+        </div>
+      }
+    }
+  }
+
+  @if (!loading() && products().length === 0) {
+    <!-- Fallback when no product available -->
+    <div class="hero__fallback">
+      <div class="hero__fallback-copy">
+        <span class="hero__chip hero__chip--cat">Ayurvedic Hair Care</span>
+        <h1 class="hero__name">Premium Natural Hair & Beauty Products</h1>
+        <p class="hero__subtitle">Rooted in ancient Ayurvedic wisdom, crafted for modern living.</p>
+        <a class="hero__btn-cart" routerLink="/shop">Shop All Products</a>
+      </div>
+    </div>
+  }
+
+</section>

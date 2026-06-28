@@ -1,0 +1,22 @@
+{
+  "name": "Luv Kush Natural",
+  "short_name": "LuvKush",
+  "description": "Premium Ayurvedic beauty and hair care",
+  "theme_color": "#6B3A2A",
+  "background_color": "#F8F4ED",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

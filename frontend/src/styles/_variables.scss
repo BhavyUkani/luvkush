@@ -1,0 +1,181 @@
+// ============================================================
+// LUṼ KUSH NATURAL — Design Tokens
+// Premium Ayurvedic Luxury Brand
+// ============================================================
+
+// Brand Palette (accent / identity)
+$color-sandalwood:        #6B3A2A;   // Deep Sandalwood Brown
+$color-herbal-green:      #3D5A47;   // Warm Herbal Green
+$color-copper:            #B87333;   // Aged Copper
+$color-ivory:             #F8F4ED;   // Ivory Cream
+$color-gold:              #C9A84C;   // Muted Gold
+$color-gold-light:        #E2C97E;   // Light Gold
+$color-gold-dark:         #A8893A;   // Dark Gold
+
+// Premium Ayurvedic Refinements
+$color-ivory-warm:        #FAF7F2;   // Pure warm ivory — premium page bg
+$color-warm-sand:         #F1E8D8;   // Warm sand — section backgrounds
+$color-warm-sand-dark:    #E5D5BC;   // Deeper sand — card borders on warm bg
+$color-forest-deep:       #20362A;   // Deepest forest — premium dark sections
+$color-ayurvedic-green:   #36503B;   // Ayurvedic green — mid-tone
+$color-copper-gold:       #B88447;   // Refined copper gold — premium accents
+$color-charcoal-true:     #1E1E1E;   // Pure charcoal — premium text on light
+$color-parchment-warm:    #EDE0CC;   // Parchment — ingredient cards bg
+$color-sage:              #7A9E7E;   // Sage green — soft botanical accent
+
+// Accent Palette
+$color-saffron:           #D4580A;   // Saffron (sale / discount)
+$color-turmeric:          #C8891A;   // Turmeric Yellow (star ratings)
+$color-forest:            #1E3B2F;   // Dark Forest Green (announcement bar)
+$color-rosewood:          #7A3345;   // Rosewood
+
+// White-first Neutral System
+$color-white:             #FFFFFF;
+$color-bg-page:           #FFFFFF;   // Primary page background
+$color-bg-subtle:         #F7F8FA;   // Alternate section background
+$color-bg-muted:          #EFEFEF;   // Muted backgrounds
+$color-border-base:       #E8E8E8;   // Default border
+$color-border-strong:     #CCCCCC;   // Strong border
+
+// Legacy neutrals (kept for backwards compat)
+$color-ivory-deep:        #F2EDE3;
+$color-beige:             #EDE5D8;
+$color-beige-dark:        #D9CDBA;
+$color-parchment:         #F5F0E8;
+$color-charcoal:          #1C1C1C;   // Updated: near black (was warm-toned)
+$color-dark-brown:        #2D1A12;   // Dark Brown (footer bg)
+$color-warm-gray:         #8B7D6B;   // Warm Gray
+$color-light-gray:        #C4B8A8;   // Light Gray
+
+// Semantic — white-first ecommerce
+$color-text-primary:      #1C1C1C;   // Near black (was warm #1A1410)
+$color-text-secondary:    #555555;   // Mid gray
+$color-text-muted:        #888888;   // Muted gray
+$color-text-inverse:      #FFFFFF;   // White text on dark
+$color-border:            #E8E8E8;   // Default border (was rgba copper)
+$color-border-light:      #F0F0F0;   // Light border
+
+// Gradients
+$gradient-gold:           linear-gradient(135deg, $color-gold-light 0%, $color-gold 50%, $color-gold-dark 100%);
+$gradient-sandalwood:     linear-gradient(180deg, $color-sandalwood 0%, $color-dark-brown 100%);
+$gradient-forest:         linear-gradient(135deg, $color-forest 0%, $color-herbal-green 100%);
+$gradient-hero:           linear-gradient(160deg, #1E3B2F 0%, #2D1A12 40%, #1A1410 100%);
+$gradient-ivory:          linear-gradient(180deg, $color-ivory 0%, $color-beige 100%);
+$gradient-copper-glow:    radial-gradient(ellipse at center, rgba($color-copper, 0.2) 0%, transparent 70%);
+
+// Shadows
+$shadow-sm:               0 2px 8px rgba($color-dark-brown, 0.08);
+$shadow-md:               0 8px 32px rgba($color-dark-brown, 0.12);
+$shadow-lg:               0 16px 64px rgba($color-dark-brown, 0.18);
+$shadow-xl:               0 32px 96px rgba($color-dark-brown, 0.24);
+$shadow-gold:             0 4px 24px rgba($color-gold, 0.3);
+$shadow-inset:            inset 0 2px 8px rgba($color-dark-brown, 0.08);
+
+// Typography Scale
+$font-heading:            'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+$font-subheading:         'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+$font-display:            'Cinzel', 'Cormorant Garamond', serif;
+$font-body:               'Manrope', 'Inter', system-ui, sans-serif;
+$font-ui:                 'Inter', 'Manrope', system-ui, sans-serif;
+
+// Font Sizes — fluid scale
+$fs-xs:                   0.75rem;    // 12px
+$fs-sm:                   0.875rem;   // 14px
+$fs-base:                 1rem;       // 16px
+$fs-md:                   1.125rem;   // 18px
+$fs-lg:                   1.25rem;    // 20px
+$fs-xl:                   1.5rem;     // 24px
+$fs-2xl:                  2rem;       // 32px
+$fs-3xl:                  2.5rem;     // 40px
+$fs-4xl:                  3.5rem;     // 56px
+$fs-5xl:                  5rem;       // 80px
+$fs-6xl:                  7rem;       // 112px
+$fs-hero:                 clamp(4rem, 10vw, 9rem);
+
+// Font Weights
+$fw-light:                300;
+$fw-regular:              400;
+$fw-medium:               500;
+$fw-semibold:             600;
+$fw-bold:                 700;
+$fw-extrabold:            800;
+
+// Line Heights
+$lh-tight:                1.1;
+$lh-snug:                 1.3;
+$lh-normal:               1.6;
+$lh-relaxed:              1.8;
+$lh-loose:                2.2;
+
+// Letter Spacing
+$ls-tightest:             -0.04em;
+$ls-tight:                -0.02em;
+$ls-normal:               0;
+$ls-wide:                 0.05em;
+$ls-wider:                0.1em;
+$ls-widest:               0.2em;
+$ls-caps:                 0.15em;
+
+// Spacing Scale
+$space-1:                 0.25rem;
+$space-2:                 0.5rem;
+$space-3:                 0.75rem;
+$space-4:                 1rem;
+$space-5:                 1.25rem;
+$space-6:                 1.5rem;
+$space-8:                 2rem;
+$space-10:                2.5rem;
+$space-12:                3rem;
+$space-16:                4rem;
+$space-20:                5rem;
+$space-24:                6rem;
+$space-32:                8rem;
+$space-40:                10rem;
+$space-48:                12rem;
+$space-64:                16rem;
+
+// Border Radius
+$radius-sm:               4px;
+$radius-md:               8px;
+$radius-lg:               16px;
+$radius-xl:               24px;
+$radius-2xl:              40px;
+$radius-pill:             9999px;
+
+// Breakpoints
+$bp-xs:                   480px;
+$bp-sm:                   640px;
+$bp-md:                   768px;
+$bp-lg:                   1024px;
+$bp-xl:                   1280px;
+$bp-2xl:                  1440px;
+$bp-3xl:                  1920px;
+
+// Transitions
+$transition-fast:         180ms cubic-bezier(0.4, 0, 0.2, 1);
+$transition-base:         320ms cubic-bezier(0.4, 0, 0.2, 1);
+$transition-slow:         600ms cubic-bezier(0.4, 0, 0.2, 1);
+$transition-luxury:       800ms cubic-bezier(0.22, 1, 0.36, 1);
+$transition-spring:       500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+// Z-Index Scale
+$z-below:                 -1;
+$z-base:                  1;
+$z-raised:                10;
+$z-floating:              100;
+$z-overlay:               200;
+$z-modal:                 300;
+$z-toast:                 400;
+$z-cursor:                1000;
+
+// Container Widths
+$container-sm:            640px;
+$container-md:            768px;
+$container-lg:            1024px;
+$container-xl:            1280px;
+$container-2xl:           1440px;
+$container-max:           1600px;
+
+// Section spacing — ecommerce scale (reduced from storytelling scale)
+$section-padding-y:       clamp(2.5rem, 5vw, 4rem);
+$section-padding-x:       clamp(1rem, 4vw, 3rem);

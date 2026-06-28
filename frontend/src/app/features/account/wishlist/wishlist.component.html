@@ -1,0 +1,32 @@
+<div class="ac">
+  <lk-account-nav />
+  <div class="ac-content">
+    <h1 class="ac-page-title">Wishlist</h1>
+
+    @if (loading()) {
+      <div class="wl-grid">
+        @for (_ of [1,2,3,4]; track $index) {
+          <div class="wl-skeleton shimmer"></div>
+        }
+      </div>
+    } @else if (wishlist.isEmpty()) {
+      <div class="ac-empty">
+        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <p>Your wishlist is empty.</p>
+        <a routerLink="/shop" class="ac-empty__cta">Start Shopping</a>
+      </div>
+    } @else {
+      <div class="wl-grid">
+        @for (product of wishlist.items(); track product.id) {
+          <div class="wl-item">
+            <lk-product-card [product]="product" />
+            <div class="wl-item__actions">
+              <button class="wl-item__cart" (click)="moveToCart(product)">Move to Cart</button>
+              <button class="wl-item__remove" (click)="remove(product)" aria-label="Remove">&#10005; Remove</button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

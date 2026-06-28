@@ -1,0 +1,440 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+@use 'typography';
+@use 'animations';
+
+// ============================================================
+// GLOBAL BASE STYLES
+// ============================================================
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+
+  // Lenis smooth scroll override
+  &.lenis, &.lenis body {
+    height: auto;
+  }
+
+  &.lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  &.lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+
+  &.lenis.lenis-stopped {
+    overflow: hidden;
+  }
+}
+
+body {
+  background-color: $color-bg-page;
+  color: $color-text-primary;
+  overflow-x: hidden;
+  @include custom-scrollbar;
+}
+
+img, video {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+}
+
+input, textarea, select {
+  font: inherit;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+// ============================================================
+// LAYOUT UTILITIES
+// ============================================================
+
+.container {
+  @include container;
+}
+
+.container--sm  { @include container($container-sm); }
+.container--md  { @include container($container-md); }
+.container--lg  { @include container($container-lg); }
+.container--xl  { @include container($container-xl); }
+.container--2xl { @include container($container-2xl); }
+
+.section {
+  @include section;
+}
+
+// ============================================================
+// CUSTOM CURSOR
+// ============================================================
+
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: $z-cursor;
+  mix-blend-mode: multiply;
+
+  &__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: $color-copper;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease, background 0.3s ease;
+  }
+
+  &__ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba($color-copper, 0.5);
+    transform: translate(-50%, -50%);
+    transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                height 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                border-color 0.3s ease;
+  }
+
+  &.is-hovering {
+    .cursor__dot {
+      width: 4px;
+      height: 4px;
+      background: $color-gold;
+    }
+
+    .cursor__ring {
+      width: 56px;
+      height: 56px;
+      border-color: rgba($color-gold, 0.6);
+    }
+  }
+
+  &.is-clicking {
+    .cursor__ring {
+      width: 24px;
+      height: 24px;
+    }
+  }
+}
+
+// ============================================================
+// BUTTON SYSTEM
+// ============================================================
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-3;
+  padding: $space-4 $space-8;
+  font-family: $font-ui;
+  font-size: $fs-sm;
+  font-weight: $fw-semibold;
+  letter-spacing: $ls-wider;
+  text-transform: uppercase;
+  border-radius: 2px;
+  transition: all $transition-luxury;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+
+  // Ripple effect
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 50% 50%;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.6s ease, opacity 0.6s ease;
+    opacity: 0;
+  }
+
+  &:active::after {
+    transform: translate(-50%, -50%) scale(3);
+    opacity: 0;
+    transition: 0s;
+  }
+
+  // Primary — Gold
+  &--primary {
+    background: $color-sandalwood;
+    color: $color-ivory;
+    box-shadow: 0 2px 16px rgba($color-sandalwood, 0.3);
+
+    &:hover {
+      background: $color-dark-brown;
+      box-shadow: 0 8px 32px rgba($color-sandalwood, 0.4);
+      transform: translateY(-2px);
+    }
+  }
+
+  // Secondary — Outlined
+  &--secondary {
+    background: transparent;
+    color: $color-sandalwood;
+    border: 1px solid rgba($color-copper, 0.4);
+
+    &:hover {
+      background: rgba($color-copper, 0.06);
+      border-color: $color-copper;
+    }
+  }
+
+  // Gold
+  &--gold {
+    background: $gradient-gold;
+    color: $color-dark-brown;
+    box-shadow: $shadow-gold;
+
+    &:hover {
+      box-shadow: 0 8px 32px rgba($color-gold, 0.4);
+      transform: translateY(-2px);
+    }
+  }
+
+  // Ghost (dark bg)
+  &--ghost {
+    background: transparent;
+    color: $color-ivory;
+    border: 1px solid rgba($color-ivory, 0.35);
+
+    &:hover {
+      background: rgba($color-ivory, 0.08);
+      border-color: rgba($color-ivory, 0.6);
+    }
+  }
+
+  // Icon button
+  &--icon {
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border-radius: 50%;
+  }
+
+  @include focus-ring;
+}
+
+// ============================================================
+// BADGE
+// ============================================================
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: $space-1 $space-3;
+  font-family: $font-ui;
+  font-size: $fs-xs;
+  font-weight: $fw-semibold;
+  letter-spacing: $ls-wider;
+  text-transform: uppercase;
+  border-radius: $radius-pill;
+
+  &--gold {
+    background: rgba($color-gold, 0.12);
+    color: $color-gold-dark;
+    border: 1px solid rgba($color-gold, 0.3);
+  }
+
+  &--green {
+    background: rgba($color-herbal-green, 0.1);
+    color: $color-herbal-green;
+    border: 1px solid rgba($color-herbal-green, 0.25);
+  }
+
+  &--copper {
+    background: rgba($color-copper, 0.1);
+    color: $color-copper;
+    border: 1px solid rgba($color-copper, 0.25);
+  }
+
+  &--new {
+    background: $color-sandalwood;
+    color: $color-ivory;
+  }
+}
+
+// ============================================================
+// DIVIDERS
+// ============================================================
+
+.divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, $color-copper, transparent);
+  opacity: 0.3;
+  margin: $space-12 0;
+
+  &--gold {
+    background: linear-gradient(90deg, transparent, $color-gold, transparent);
+    opacity: 0.4;
+  }
+
+  &--vertical {
+    width: 1px;
+    height: auto;
+    background: linear-gradient(180deg, transparent, $color-copper, transparent);
+    align-self: stretch;
+  }
+}
+
+// ============================================================
+// ORNAMENT
+// ============================================================
+
+.ornament {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  color: $color-copper;
+
+  &::before, &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, $color-copper);
+  }
+
+  &::after {
+    background: linear-gradient(90deg, $color-copper, transparent);
+  }
+
+  // Diamond ornament
+  &__diamond {
+    width: 6px;
+    height: 6px;
+    background: $color-copper;
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+}
+
+// ============================================================
+// PRELOADER
+// ============================================================
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  background: $color-dark-brown;
+  z-index: 9999;
+  @include flex-center;
+  flex-direction: column;
+  gap: $space-6;
+
+  &__brand {
+    font-family: $font-display;
+    font-size: $fs-2xl;
+    color: $color-ivory;
+    letter-spacing: $ls-caps;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeIn 0.8s ease 0.3s forwards;
+  }
+
+  &__sub {
+    font-family: $font-body;
+    font-size: $fs-xs;
+    color: $color-copper;
+    letter-spacing: $ls-widest;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeIn 0.8s ease 0.6s forwards;
+  }
+
+  &__bar {
+    width: 200px;
+    height: 1px;
+    background: rgba($color-ivory, 0.1);
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0 100% 0 0;
+      background: $gradient-gold;
+      animation: loadBar 2s ease forwards 0.8s;
+    }
+  }
+}
+
+@keyframes loadBar {
+  to { inset: 0 0 0 0; }
+}
+
+// ============================================================
+// SCROLL PROGRESS BAR
+// ============================================================
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: $gradient-gold;
+  z-index: $z-modal;
+  transition: width 0.1s linear;
+}
+
+// ============================================================
+// SECTION TRANSITIONS
+// ============================================================
+
+.page-transition {
+  &-enter-active, &-leave-active {
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  &-enter-from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  &-leave-to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+// ============================================================
+// TOAST / NOTIFICATIONS
+// ============================================================
+
+.toast {
+  position: fixed;
+  bottom: $space-8;
+  right: $space-8;
+  background: $color-dark-brown;
+  color: $color-ivory;
+  padding: $space-4 $space-6;
+  border-radius: $radius-md;
+  border-left: 3px solid $color-gold;
+  font-family: $font-body;
+  font-size: $fs-sm;
+  box-shadow: $shadow-xl;
+  z-index: $z-toast;
+  animation: fadeInUp 0.4s ease;
+}

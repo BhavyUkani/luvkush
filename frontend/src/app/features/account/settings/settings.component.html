@@ -1,0 +1,56 @@
+<div class="ac">
+  <lk-account-nav />
+  <div class="ac-content">
+    <h1 class="ac-page-title">Account Settings</h1>
+
+    <div class="ac-card sett-section">
+      <h2 class="sett-title">Change Password</h2>
+      <form [formGroup]="pwForm" (ngSubmit)="onChangePw()" novalidate>
+        <div class="sett-field">
+          <label class="sett-label">Current password</label>
+          <div class="sett-pw-wrap">
+            <input [type]="showCurrentPw() ? 'text' : 'password'" formControlName="current_password"
+              class="sett-input" [class.sett-input--invalid]="pwSubmitted && pf.current_password.invalid" />
+            <button type="button" class="sett-eye" (click)="showCurrentPw.set(!showCurrentPw())" tabindex="-1">
+              {{ showCurrentPw() ? '🙈' : '👁' }}
+            </button>
+          </div>
+          @if (pwSubmitted && pf.current_password.invalid) { <span class="sett-err">Required</span> }
+        </div>
+        <div class="sett-field">
+          <label class="sett-label">New password</label>
+          <div class="sett-pw-wrap">
+            <input [type]="showNewPw() ? 'text' : 'password'" formControlName="new_password"
+              class="sett-input" [class.sett-input--invalid]="pwSubmitted && pf.new_password.invalid" />
+            <button type="button" class="sett-eye" (click)="showNewPw.set(!showNewPw())" tabindex="-1">
+              {{ showNewPw() ? '🙈' : '👁' }}
+            </button>
+          </div>
+          @if (pwSubmitted && pf.new_password.invalid) { <span class="sett-err">Min 8 characters</span> }
+        </div>
+        <div class="sett-field">
+          <label class="sett-label">Confirm new password</label>
+          <div class="sett-pw-wrap">
+            <input [type]="showConfirmPw() ? 'text' : 'password'" formControlName="confirm_password"
+              class="sett-input" [class.sett-input--invalid]="pwSubmitted && (pf.confirm_password.invalid || pwForm.hasError('mismatch'))" />
+            <button type="button" class="sett-eye" (click)="showConfirmPw.set(!showConfirmPw())" tabindex="-1">
+              {{ showConfirmPw() ? '🙈' : '👁' }}
+            </button>
+          </div>
+          @if (pwSubmitted && pwForm.hasError('mismatch')) { <span class="sett-err">Passwords do not match</span> }
+        </div>
+        <button type="submit" class="sett-save" [disabled]="savingPw()">
+          @if (savingPw()) { Saving… } @else { Update Password }
+        </button>
+      </form>
+    </div>
+
+    <div class="ac-card sett-section sett-section--danger">
+      <h2 class="sett-title sett-title--danger">Danger Zone</h2>
+      <p class="sett-danger-desc">Permanently delete your account and all associated data. This action cannot be undone.</p>
+      <button class="sett-delete-btn" (click)="deleteAccount()" [disabled]="deletingAcct()">
+        @if (deletingAcct()) { Deleting… } @else { Delete My Account }
+      </button>
+    </div>
+  </div>
+</div>

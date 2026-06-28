@@ -1,0 +1,124 @@
+@use "../../../../styles/variables" as *;
+@use "../account-shared";
+
+.addr-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.75rem; }
+
+.addr-add-btn {
+  padding: 0.6rem 1.25rem;
+  background: $color-herbal-green;
+  color: $color-white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.18s;
+  &:hover { opacity: 0.88; }
+}
+
+.addr-skeleton { height: 160px; border-radius: 10px; background: $color-bg-subtle; margin-bottom: 1rem; }
+
+.addr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+
+.addr-card {
+  border: 1.5px solid $color-border-base;
+  border-radius: 10px;
+  padding: 1.25rem;
+  background: $color-white;
+  position: relative;
+
+  &--default { border-color: $color-herbal-green; }
+}
+
+.addr-default-badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: $color-herbal-green;
+  background: rgba(61, 90, 71, 0.08);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.addr-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: $color-text-muted; margin: 0 0 0.375rem; }
+.addr-name  { font-weight: 600; color: $color-text-primary; margin: 0 0 0.25rem; }
+.addr-text  { font-size: 0.875rem; color: $color-text-secondary; margin: 0 0 0.125rem; }
+.addr-phone { font-size: 0.875rem; color: $color-text-muted; margin: 0.25rem 0 0; }
+
+.addr-actions { display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
+
+.addr-btn {
+  padding: 0.4rem 0.875rem;
+  border-radius: 5px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: all 0.18s;
+
+  &--edit { border-color: $color-border-base; background: none; color: $color-text-secondary; &:hover { border-color: $color-herbal-green; color: $color-herbal-green; } }
+  &--default { border-color: $color-herbal-green; background: none; color: $color-herbal-green; &:hover { background: $color-herbal-green; color: $color-white; } }
+  &--del { border-color: transparent; background: none; color: $color-text-muted; &:hover { color: #E53E3E; } &:disabled { opacity: 0.5; cursor: not-allowed; } }
+  &--cancel { border-color: $color-border-base; background: none; color: $color-text-secondary; &:hover { border-color: $color-herbal-green; } }
+  &--save { background: $color-herbal-green; color: $color-white; border-color: $color-herbal-green; &:disabled { opacity: 0.6; cursor: not-allowed; } }
+}
+
+.addr-form-wrap {
+  margin-top: 1.5rem;
+  border: 1.5px solid $color-border-base;
+  border-radius: 10px;
+  padding: 1.5rem;
+  background: $color-white;
+}
+
+.addr-form-title { font-size: 1rem; font-weight: 600; margin: 0 0 1.25rem; }
+
+.addr-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  &--3 { grid-template-columns: 1fr 1fr 1fr; }
+  @media (max-width: 600px) { grid-template-columns: 1fr; &--3 { grid-template-columns: 1fr; } }
+}
+
+.addr-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  &--full { margin-bottom: 1rem; }
+
+  label { font-size: 0.8125rem; font-weight: 500; color: $color-text-secondary; }
+}
+
+.addr-input {
+  padding: 0.7rem 0.875rem;
+  border: 1.5px solid $color-border-base;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: $color-text-primary;
+  background: $color-white;
+  outline: none;
+  transition: border-color 0.18s;
+  &:focus { border-color: $color-herbal-green; }
+  &--invalid { border-color: #E53E3E; }
+}
+
+.addr-err { font-size: 0.75rem; color: #E53E3E; }
+
+.addr-default-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: $color-text-secondary;
+  cursor: pointer;
+  margin-bottom: 1.25rem;
+  input { width: 16px; height: 16px; cursor: pointer; accent-color: $color-herbal-green; }
+}
+
+.addr-form-actions { display: flex; gap: 0.75rem; justify-content: flex-end; }

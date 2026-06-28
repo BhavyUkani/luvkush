@@ -1,0 +1,267 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+// Admin light theme tokens
+$adm-bg:          #F7F8FA;
+$adm-surface:     #FFFFFF;
+$adm-border:      #E8E8E8;
+$adm-border-lite: #F0F0F0;
+$adm-text:        #1C1C1C;
+$adm-text-mid:    #555555;
+$adm-text-muted:  #888888;
+$adm-accent:      $color-copper;
+$adm-accent-bg:   rgba($color-copper, 0.08);
+$adm-sidebar-w:   240px;
+$adm-sidebar-c:   64px;
+$adm-topbar-h:    60px;
+
+.admin {
+  display: grid;
+  grid-template-columns: $adm-sidebar-w 1fr;
+  min-height: 100vh;
+  background: $adm-bg;
+  color: $adm-text;
+  transition: grid-template-columns $transition-luxury;
+  font-family: $font-ui;
+
+  &--collapsed {
+    grid-template-columns: $adm-sidebar-c 1fr;
+  }
+}
+
+// ── Sidebar ─────────────────────────────
+.admin-sidebar {
+  background: $adm-surface;
+  border-right: 1px solid $adm-border;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+  transition: width $transition-luxury;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.04);
+
+  &--open { width: $adm-sidebar-w; }
+  &:not(&--open) { width: $adm-sidebar-c; }
+
+  &__brand {
+    height: $adm-topbar-h;
+    padding: 0 $space-4;
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    border-bottom: 1px solid $adm-border;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  &__brand-icon {
+    color: $color-copper;
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    background: rgba($color-copper, 0.08);
+    border-radius: $radius-sm;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  &__brand-name {
+    font-family: $font-ui;
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: $adm-text;
+  }
+
+  &__brand-sub {
+    font-size: 10px;
+    letter-spacing: $ls-wider;
+    text-transform: uppercase;
+    color: $color-copper;
+  }
+
+  &__nav {
+    flex: 1;
+    padding: $space-3 $space-2;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow-y: auto;
+  }
+
+  &__toggle {
+    height: 44px;
+    @include flex-center;
+    background: none;
+    border: none;
+    border-top: 1px solid $adm-border;
+    color: $adm-text-muted;
+    cursor: pointer;
+    transition: all $transition-fast;
+    flex-shrink: 0;
+
+    &:hover { color: $color-copper; background: $adm-accent-bg; }
+  }
+}
+
+// ── Nav Item ─────────────────────────────
+.admin-nav-item {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: 0.55rem $space-3;
+  border-radius: $radius-md;
+  color: $adm-text-mid;
+  text-decoration: none;
+  transition: all $transition-fast;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  font-size: $fs-sm;
+
+  &:hover {
+    background: $adm-accent-bg;
+    color: $color-copper;
+  }
+
+  &--active {
+    background: $adm-accent-bg !important;
+    color: $color-copper !important;
+    font-weight: $fw-semibold;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 6px;
+      bottom: 6px;
+      width: 3px;
+      background: $color-copper;
+      border-radius: 0 2px 2px 0;
+    }
+  }
+
+  &__icon {
+    width: 32px;
+    height: 32px;
+    @include flex-center;
+    flex-shrink: 0;
+    border-radius: $radius-sm;
+  }
+
+  &__label {
+    font-size: $fs-sm;
+    font-weight: $fw-medium;
+    flex: 1;
+  }
+
+  &__badge {
+    font-size: 10px;
+    font-weight: $fw-bold;
+    padding: 2px $space-2;
+    background: $color-copper;
+    color: $color-ivory;
+    border-radius: $radius-pill;
+    min-width: 20px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+}
+
+// ── Main ─────────────────────────────────
+.admin-main {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+// ── Topbar ───────────────────────────────
+.admin-topbar {
+  height: $adm-topbar-h;
+  background: $adm-surface;
+  border-bottom: 1px solid $adm-border;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 $space-6;
+  position: sticky;
+  top: 0;
+  z-index: $z-raised;
+
+  &__left, &__right {
+    display: flex;
+    align-items: center;
+    gap: $space-4;
+  }
+
+  &__menu-btn {
+    @include flex-center;
+    width: 36px;
+    height: 36px;
+    background: none;
+    border: none;
+    color: $adm-text-muted;
+    cursor: pointer;
+    border-radius: $radius-sm;
+    transition: all $transition-fast;
+
+    &:hover { background: $adm-accent-bg; color: $color-copper; }
+  }
+
+  &__date {
+    font-size: $fs-xs;
+    color: $adm-text-muted;
+  }
+
+  &__user {
+    font-size: $fs-xs;
+    font-weight: $fw-semibold;
+    color: $adm-text-mid;
+  }
+
+  &__avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba($color-copper, 0.12);
+    color: $color-copper;
+    font-size: $fs-xs;
+    font-weight: $fw-bold;
+    @include flex-center;
+    cursor: default;
+    border: 1.5px solid rgba($color-copper, 0.25);
+    flex-shrink: 0;
+  }
+
+  &__logout {
+    padding: 0.35rem 0.75rem;
+    background: none;
+    border: 1px solid $adm-border;
+    border-radius: $radius-sm;
+    color: $adm-text-muted;
+    font-size: $fs-xs;
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    &:hover { border-color: #DC2626; color: #DC2626; background: rgba(220,38,38,0.04); }
+  }
+}
+
+// ── Content ──────────────────────────────
+.admin-content {
+  flex: 1;
+  overflow-y: auto;
+  background: $adm-bg;
+}

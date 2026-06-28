@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(& \"C:\\\\xampp\\\\mysql\\\\bin\\\\mysql.exe\" -u root luvkush_natural -e \"DESCRIBE activity_logs;\")",
+      "PowerShell(& \"C:\\\\xampp\\\\mysql\\\\bin\\\\mysql.exe\" -u root luvkush_natural -e \"DESCRIBE blog_posts;\")"
+    ]
+  }
+}

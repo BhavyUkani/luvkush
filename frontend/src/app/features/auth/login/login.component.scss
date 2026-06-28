@@ -1,0 +1,16 @@
+@use "../../../../styles/variables" as *;
+@use "../auth-shared";
+
+.field__label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.field__forgot {
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: $color-herbal-green;
+  text-decoration: none;
+  &:hover { text-decoration: underline; }
+}

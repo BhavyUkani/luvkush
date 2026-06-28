@@ -1,0 +1,56 @@
+<section class="hl" [attr.aria-label]="title">
+
+  <div class="hl__header reveal">
+    <div>
+      <h2 class="hl__title">{{ title }}</h2>
+      <p class="hl__sub">{{ subtitle }}</p>
+    </div>
+    <a class="hl__view-all" [routerLink]="viewAllLink">
+      View All
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M3 7H11M8 4L11 7L8 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+
+  @if (loading()) {
+    <div class="hl__slider">
+      @for (n of [1, 2, 3, 4]; track n) {
+        <div class="hl__skel skel-block"></div>
+      }
+    </div>
+  }
+
+  @if (!loading() && items().length > 0) {
+    <div class="hl__slider reveal">
+      @for (item of items(); track trackById($index, item)) {
+        <a class="hl__card" [routerLink]="[viewAllLink, item.slug]">
+          <div class="hl__card-img-wrap">
+            <img [src]="imgUrl(item.primary_image)" [alt]="item.name" class="hl__card-img" loading="lazy" />
+            @if (item.gender) {
+              <span class="hl__card-gender">{{ item.gender | titlecase }}</span>
+            }
+          </div>
+          <div class="hl__card-body">
+            <h3 class="hl__card-name">{{ item.name }}</h3>
+            @if (item.short_description) {
+              <p class="hl__card-desc">{{ item.short_description }}</p>
+            }
+            <div class="hl__card-price-row">
+              <span class="hl__card-price">₹{{ item.price | number:'1.0-0' }}</span>
+              @if (item.mrp && item.mrp > item.price) {
+                <span class="hl__card-mrp">₹{{ item.mrp | number:'1.0-0' }}</span>
+              }
+            </div>
+            <button class="hl__card-btn">View Details</button>
+          </div>
+        </a>
+      }
+    </div>
+  }
+
+  @if (!loading() && items().length === 0) {
+    <p class="hl__empty">No solutions available right now.</p>
+  }
+
+</section>

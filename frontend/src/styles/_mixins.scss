@@ -1,0 +1,256 @@
+@use 'variables' as *;
+
+// ============================================================
+// MIXINS & UTILITY FUNCTIONS
+// ============================================================
+
+// Breakpoint Mixin
+@mixin respond-to($bp) {
+  @if $bp == 'xs'   { @media (min-width: $bp-xs)  { @content; } }
+  @if $bp == 'sm'   { @media (min-width: $bp-sm)  { @content; } }
+  @if $bp == 'md'   { @media (min-width: $bp-md)  { @content; } }
+  @if $bp == 'lg'   { @media (min-width: $bp-lg)  { @content; } }
+  @if $bp == 'xl'   { @media (min-width: $bp-xl)  { @content; } }
+  @if $bp == '2xl'  { @media (min-width: $bp-2xl) { @content; } }
+  @if $bp == '3xl'  { @media (min-width: $bp-3xl) { @content; } }
+}
+
+@mixin respond-max($bp) {
+  @if $bp == 'xs'   { @media (max-width: #{$bp-xs - 1})   { @content; } }
+  @if $bp == 'sm'   { @media (max-width: #{$bp-sm - 1})   { @content; } }
+  @if $bp == 'md'   { @media (max-width: #{$bp-md - 1})   { @content; } }
+  @if $bp == 'lg'   { @media (max-width: #{$bp-lg - 1})   { @content; } }
+  @if $bp == 'xl'   { @media (max-width: #{$bp-xl - 1})   { @content; } }
+  @if $bp == '2xl'  { @media (max-width: #{$bp-2xl - 1})  { @content; } }
+}
+
+// Container
+@mixin container($max: $container-2xl) {
+  width: 100%;
+  max-width: $max;
+  margin-inline: auto;
+  padding-inline: $section-padding-x;
+}
+
+// Section spacing
+@mixin section {
+  padding-block: $section-padding-y;
+}
+
+// Typography
+@mixin heading-display {
+  font-family: $font-display;
+  font-weight: $fw-regular;
+  letter-spacing: $ls-caps;
+  text-transform: uppercase;
+}
+
+@mixin heading-serif {
+  font-family: $font-heading;
+  font-weight: $fw-light;
+  line-height: $lh-tight;
+  letter-spacing: $ls-tight;
+}
+
+@mixin body-text {
+  font-family: $font-body;
+  font-weight: $fw-regular;
+  line-height: $lh-relaxed;
+}
+
+@mixin label-text {
+  font-family: $font-ui;
+  font-size: $fs-xs;
+  font-weight: $fw-semibold;
+  letter-spacing: $ls-widest;
+  text-transform: uppercase;
+}
+
+// Gold Accent Line
+@mixin gold-line($width: 60px, $height: 1px) {
+  content: '';
+  display: block;
+  width: $width;
+  height: $height;
+  background: $gradient-gold;
+  margin: $space-4 auto;
+}
+
+@mixin gold-line-left($width: 60px) {
+  &::before {
+    content: '';
+    display: inline-block;
+    width: $width;
+    height: 1px;
+    background: $gradient-gold;
+    vertical-align: middle;
+    margin-right: $space-4;
+  }
+}
+
+// Texture Overlay
+@mixin texture-overlay($opacity: 0.04) {
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    opacity: $opacity;
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+// Flex utilities
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+// Absolute fill
+@mixin fill {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+// Text gradient
+@mixin text-gradient($gradient: $gradient-gold) {
+  background: $gradient;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// Copper shimmer border
+@mixin copper-border($width: 1px) {
+  border: $width solid transparent;
+  background-clip: padding-box;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -$width;
+    z-index: -1;
+    border-radius: inherit;
+    background: linear-gradient(135deg, $color-copper, $color-gold, $color-gold-light, $color-copper);
+  }
+}
+
+// Hover lift effect
+@mixin hover-lift($translate: -4px, $shadow: $shadow-lg) {
+  transition: transform $transition-luxury, box-shadow $transition-luxury;
+
+  &:hover {
+    transform: translateY($translate);
+    box-shadow: $shadow;
+  }
+}
+
+// Magnetic button effect base
+@mixin magnetic-button {
+  position: relative;
+  overflow: hidden;
+  cursor: none;
+
+  .btn-inner {
+    display: block;
+    transition: transform $transition-luxury;
+  }
+}
+
+// Reveal animation clip
+@mixin clip-reveal {
+  clip-path: inset(100% 0 0 0);
+
+  &.revealed {
+    clip-path: inset(0% 0 0 0);
+    transition: clip-path 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+// Scrollbar styling
+@mixin custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: $color-copper $color-beige;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $color-beige;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $color-copper;
+    border-radius: $radius-pill;
+  }
+}
+
+// Aspect ratio
+@mixin aspect($ratio: '16/9') {
+  aspect-ratio: #{$ratio};
+}
+
+// Image cover
+@mixin img-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+// Truncate text
+@mixin truncate($lines: 1) {
+  @if $lines == 1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+// Focus ring
+@mixin focus-ring {
+  &:focus-visible {
+    outline: 2px solid $color-gold;
+    outline-offset: 4px;
+    border-radius: $radius-sm;
+  }
+}
+
+// Section label style
+@mixin section-label {
+  @include label-text;
+  color: $color-copper;
+  display: inline-flex;
+  align-items: center;
+  gap: $space-3;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 32px;
+    height: 1px;
+    background: $gradient-gold;
+  }
+}

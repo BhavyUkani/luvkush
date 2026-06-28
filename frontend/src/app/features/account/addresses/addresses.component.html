@@ -1,0 +1,106 @@
+<div class="ac">
+  <lk-account-nav />
+  <div class="ac-content">
+    <div class="addr-header">
+      <h1 class="ac-page-title">Saved Addresses</h1>
+      <button class="addr-add-btn" (click)="openAdd()">+ Add Address</button>
+    </div>
+
+    @if (loading()) {
+      @for (_ of [1,2]; track $index) { <div class="addr-skeleton shimmer"></div> }
+    } @else if (!addresses().length && !showForm()) {
+      <div class="ac-empty">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        <p>No saved addresses yet.</p>
+        <button class="ac-empty__cta" (click)="openAdd()">Add Address</button>
+      </div>
+    } @else {
+      <div class="addr-grid">
+        @for (addr of addresses(); track addr.id) {
+          <div class="addr-card" [class.addr-card--default]="addr.is_default">
+            @if (addr.is_default) { <span class="addr-default-badge">Default</span> }
+            @if (addr.label) { <p class="addr-label">{{ addr.label }}</p> }
+            <p class="addr-name">{{ addr.full_name }}</p>
+            <p class="addr-text">{{ addr.address_line1 }}@if(addr.address_line2){, {{ addr.address_line2 }}}</p>
+            <p class="addr-text">{{ addr.city }}, {{ addr.state }} – {{ addr.pincode }}</p>
+            <p class="addr-phone">{{ addr.phone }}</p>
+            <div class="addr-actions">
+              <button class="addr-btn addr-btn--edit" (click)="openEdit(addr)">Edit</button>
+              @if (!addr.is_default) {
+                <button class="addr-btn addr-btn--default" (click)="setDefault(addr)">Set Default</button>
+              }
+              <button class="addr-btn addr-btn--del" (click)="delete(addr)" [disabled]="deleting() === addr.id">Delete</button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    @if (showForm()) {
+      <div class="addr-form-wrap">
+        <h2 class="addr-form-title">{{ editingId() ? "Edit" : "New" }} Address</h2>
+        <form [formGroup]="form" (ngSubmit)="onSave()" novalidate class="addr-form">
+          <div class="addr-form-row">
+            <div class="addr-form-field">
+              <label>Label</label>
+              <select formControlName="label" class="addr-input">
+                <option>Home</option><option>Work</option><option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="addr-form-row">
+            <div class="addr-form-field">
+              <label>Full name *</label>
+              <input type="text" formControlName="full_name" class="addr-input" [class.addr-input--invalid]="submitted && f.full_name.invalid" />
+              @if (submitted && f.full_name.invalid) { <span class="addr-err">Required</span> }
+            </div>
+            <div class="addr-form-field">
+              <label>Mobile *</label>
+              <input type="tel" formControlName="phone" class="addr-input" [class.addr-input--invalid]="submitted && f.phone.invalid" inputmode="numeric" />
+              @if (submitted && f.phone.invalid) { <span class="addr-err">Valid 10-digit number</span> }
+            </div>
+          </div>
+          <div class="addr-form-field addr-form-field--full">
+            <label>Address line 1 *</label>
+            <input type="text" formControlName="address_line1" class="addr-input" [class.addr-input--invalid]="submitted && f.address_line1.invalid" />
+            @if (submitted && f.address_line1.invalid) { <span class="addr-err">Required</span> }
+          </div>
+          <div class="addr-form-field addr-form-field--full">
+            <label>Address line 2</label>
+            <input type="text" formControlName="address_line2" class="addr-input" />
+          </div>
+          <div class="addr-form-row addr-form-row--3">
+            <div class="addr-form-field">
+              <label>City *</label>
+              <input type="text" formControlName="city" class="addr-input" [class.addr-input--invalid]="submitted && f.city.invalid" />
+              @if (submitted && f.city.invalid) { <span class="addr-err">Required</span> }
+            </div>
+            <div class="addr-form-field">
+              <label>State *</label>
+              <select formControlName="state" class="addr-input" [class.addr-input--invalid]="submitted && f.state.invalid">
+                <option value="">Select state</option>
+                @for (s of STATES; track s) { <option [value]="s">{{ s }}</option> }
+              </select>
+              @if (submitted && f.state.invalid) { <span class="addr-err">Required</span> }
+            </div>
+            <div class="addr-form-field">
+              <label>Pincode *</label>
+              <input type="text" formControlName="pincode" class="addr-input" [class.addr-input--invalid]="submitted && f.pincode.invalid" inputmode="numeric" maxlength="6" />
+              @if (submitted && f.pincode.invalid) { <span class="addr-err">6-digit pincode</span> }
+            </div>
+          </div>
+          <label class="addr-default-check">
+            <input type="checkbox" formControlName="is_default" />
+            Set as default address
+          </label>
+          <div class="addr-form-actions">
+            <button type="button" class="addr-btn addr-btn--cancel" (click)="closeForm()">Cancel</button>
+            <button type="submit" class="addr-btn addr-btn--save" [disabled]="saving()">
+              @if (saving()) { Saving… } @else { Save Address }
+            </button>
+          </div>
+        </form>
+      </div>
+    }
+  </div>
+</div>

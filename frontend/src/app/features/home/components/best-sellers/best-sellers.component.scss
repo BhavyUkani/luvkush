@@ -1,0 +1,83 @@
+@use "../../../../../styles/variables" as *;
+@use "../../../../../styles/mixins" as *;
+
+.bs {
+  padding: $section-padding-y $section-padding-x;
+  background: $color-bg-page;
+
+  &__header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: $space-4;
+    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+    max-width: 1440px;
+    margin-inline: auto;
+    flex-wrap: wrap;
+  }
+
+  &__title {
+    font-family: $font-heading;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: $fw-semibold;
+    color: $color-text-primary;
+    margin: 0 0 $space-1;
+  }
+
+  &__sub {
+    font-family: $font-body;
+    font-size: $fs-base;
+    color: $color-text-secondary;
+    margin: 0;
+  }
+
+  &__view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-1;
+    font-family: $font-ui;
+    font-size: $fs-sm;
+    font-weight: $fw-semibold;
+    color: $color-herbal-green;
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: gap 160ms ease;
+
+    &:hover { gap: $space-2; }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $space-4;
+    max-width: 1440px;
+    margin: 0 auto;
+
+    @include respond-to("sm") { grid-template-columns: repeat(3, 1fr); }
+    @include respond-to("md") { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  &__skel {
+    aspect-ratio: 3 / 4;
+    border-radius: $radius-md;
+    background: linear-gradient(90deg, $color-bg-muted 25%, $color-border-base 50%, $color-bg-muted 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+  }
+
+  &__empty {
+    text-align: center;
+    color: $color-text-muted;
+    font-family: $font-body;
+    font-size: $fs-sm;
+    padding: $space-8 0;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+}
+
+@keyframes shimmer {
+  from { background-position: 200% center; }
+  to   { background-position: -200% center; }
+}

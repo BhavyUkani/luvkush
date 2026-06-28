@@ -1,0 +1,152 @@
+@use "../../../styles/variables" as *;
+
+.ac {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem $section-padding-x 4rem;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 2.5rem;
+  align-items: start;
+
+  @media (max-width: #{$bp-lg - 1px}) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Sidebar nav
+.ac-nav {
+  position: sticky;
+  top: 112px;
+  background: $color-white;
+  border: 1px solid $color-border-base;
+  border-radius: 10px;
+  overflow: hidden;
+
+  @media (max-width: #{$bp-lg - 1px}) { position: static; }
+
+  &__user {
+    padding: 1.25rem;
+    border-bottom: 1px solid $color-border-base;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  &__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: $color-herbal-green;
+    color: $color-white;
+    font-weight: 700;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  &__name { font-size: 0.875rem; font-weight: 600; color: $color-text-primary; }
+  &__email { font-size: 0.75rem; color: $color-text-muted; }
+
+  &__list { list-style: none; padding: 0.5rem; margin: 0; display: flex; flex-direction: column; gap: 2px; }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.625rem 0.75rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.875rem;
+    color: $color-text-secondary;
+    transition: background 0.15s, color 0.15s;
+
+    svg { flex-shrink: 0; opacity: 0.7; }
+
+    &:hover { background: $color-bg-subtle; color: $color-text-primary; }
+
+    &.active { background: rgba(61, 90, 71, 0.08); color: $color-herbal-green; font-weight: 600; svg { opacity: 1; } }
+  }
+
+  &__logout {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.875rem 1.25rem;
+    border-top: 1px solid $color-border-base;
+    font-size: 0.875rem;
+    color: #E53E3E;
+    cursor: pointer;
+    background: none;
+    border-top: 1px solid $color-border-base;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    width: 100%;
+    text-align: left;
+    transition: background 0.15s;
+    &:hover { background: #FFF5F5; }
+  }
+}
+
+// Page content area
+.ac-content {
+  min-width: 0;
+}
+
+.ac-page-title {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: $color-text-primary;
+  margin: 0 0 1.5rem;
+}
+
+// Card
+.ac-card {
+  background: $color-white;
+  border: 1px solid $color-border-base;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+// Empty state
+.ac-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 4rem 2rem;
+  text-align: center;
+  color: $color-text-muted;
+  border: 1px solid $color-border-base;
+  border-radius: 10px;
+  background: $color-white;
+
+  h3 { font-size: 1.125rem; font-weight: 600; color: $color-text-primary; margin: 0; }
+  p  { font-size: 0.9rem; margin: 0; max-width: 320px; }
+
+  &__cta {
+    margin-top: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: $color-herbal-green;
+    color: $color-white;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    &:hover { opacity: 0.88; }
+  }
+}
+
+// Shimmer
+@keyframes shimmer { 0% { background-position: -600px 0; } 100% { background-position: 600px 0; } }
+
+.shimmer {
+  background: linear-gradient(90deg, $color-bg-muted 25%, $color-bg-subtle 50%, $color-bg-muted 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 6px;
+}

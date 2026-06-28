@@ -1,0 +1,396 @@
+@use 'sass:color';
+@use '../../../../styles/variables' as *;
+
+// Admin dark theme tokens
+$admin-bg:          #0F0D0B;
+$admin-surface:     #171310;
+$admin-surface-2:   #1E1915;
+$admin-border:      rgba(255, 255, 255, 0.05);
+$admin-text:        rgba(255, 255, 255, 0.85);
+$admin-text-muted:  rgba(255, 255, 255, 0.4);
+
+.admin-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 1400px;
+
+  &__header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid $admin-border;
+  }
+
+  &__title {
+    font-family: $font-heading;
+    font-size: 1.75rem;
+    font-weight: $fw-light;
+    color: rgba(255,255,255,0.9);
+    letter-spacing: -0.01em;
+  }
+
+  &__date {
+    font-family: $font-ui;
+    font-size: $fs-xs;
+    color: $admin-text-muted;
+    letter-spacing: $ls-wide;
+    margin-top: 0.25rem;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+
+    @media (min-width: 1024px) {
+      grid-template-columns: 2fr 1fr;
+    }
+  }
+}
+
+// Stat cards
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.admin-stat-card {
+  background: $admin-surface;
+  border: 1px solid $admin-border;
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  transition: border-color 0.3s;
+
+  &:hover { border-color: rgba($color-copper, 0.2); }
+
+  &__icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba($color-copper, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $color-copper;
+    flex-shrink: 0;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+  }
+
+  &__label {
+    font-family: $font-ui;
+    font-size: 11px;
+    font-weight: $fw-medium;
+    letter-spacing: $ls-wider;
+    text-transform: uppercase;
+    color: $admin-text-muted;
+  }
+
+  &__value {
+    font-family: $font-heading;
+    font-size: 1.4rem;
+    font-weight: $fw-light;
+    color: rgba(255,255,255,0.9);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__change {
+    font-family: $font-ui;
+    font-size: $fs-xs;
+    font-weight: $fw-medium;
+
+    &--positive { color: #4CAF73; }
+    &--negative { color: #E07373; }
+  }
+}
+
+// Cards
+.admin-card {
+  background: $admin-surface;
+  border: 1px solid $admin-border;
+  border-radius: 16px;
+  overflow: hidden;
+
+  &--chart { }
+  &--full { grid-column: 1 / -1; }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid $admin-border;
+  }
+
+  &__title {
+    font-family: $font-subheading;
+    font-size: 1rem;
+    font-weight: $fw-semibold;
+    color: rgba(255,255,255,0.85);
+  }
+
+  &__actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+}
+
+// Chart
+.admin-chart-wrap {
+  padding: 1rem 1.5rem 0;
+  height: 200px;
+}
+
+.admin-chart {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.admin-chart-summary {
+  display: flex;
+  gap: 2rem;
+  padding: 1rem 1.5rem;
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  &__label {
+    font-family: $font-ui;
+    font-size: $fs-xs;
+    color: $admin-text-muted;
+    letter-spacing: $ls-wide;
+    text-transform: uppercase;
+  }
+
+  &__value {
+    font-family: $font-heading;
+    font-size: 1.1rem;
+    font-weight: $fw-regular;
+    color: rgba(255,255,255,0.85);
+
+    &--positive { color: #4CAF73; }
+  }
+}
+
+// Top products
+.admin-top-products {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-top-product {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1.5rem;
+  border-bottom: 1px solid $admin-border;
+  transition: background 0.2s;
+
+  &:last-child { border-bottom: none; }
+  &:hover { background: rgba(255,255,255,0.02); }
+
+  &__rank {
+    font-family: $font-heading;
+    font-size: 1.25rem;
+    font-weight: $fw-light;
+    color: rgba(255,255,255,0.15);
+    min-width: 24px;
+    text-align: center;
+    line-height: 1;
+  }
+
+  &__info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+  }
+
+  &__name {
+    font-family: $font-body;
+    font-size: $fs-sm;
+    font-weight: $fw-medium;
+    color: rgba(255,255,255,0.8);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__sales {
+    font-family: $font-ui;
+    font-size: $fs-xs;
+    color: $admin-text-muted;
+  }
+
+  &__right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.2rem;
+    flex-shrink: 0;
+  }
+
+  &__revenue {
+    font-family: $font-body;
+    font-size: $fs-sm;
+    font-weight: $fw-semibold;
+    color: rgba(255,255,255,0.85);
+  }
+
+  &__trend {
+    font-family: $font-ui;
+    font-size: $fs-xs;
+    color: #4CAF73;
+  }
+}
+
+// Orders table
+.admin-orders-table {
+  font-family: $font-ui;
+}
+
+.admin-table-head {
+  display: grid;
+  grid-template-columns: 100px 1fr 1.5fr 100px 120px 120px;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: $fs-xs;
+  font-weight: $fw-semibold;
+  letter-spacing: $ls-wider;
+  text-transform: uppercase;
+  color: $admin-text-muted;
+  border-bottom: 1px solid $admin-border;
+}
+
+.admin-table-row {
+  display: grid;
+  grid-template-columns: 100px 1fr 1.5fr 100px 120px 120px;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  border-bottom: 1px solid $admin-border;
+  align-items: center;
+  font-size: $fs-sm;
+  transition: background 0.2s;
+
+  &:last-child { border-bottom: none; }
+  &:hover { background: rgba(255,255,255,0.02); }
+
+  > span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.admin-table-id { color: $color-copper; font-weight: $fw-medium; }
+.admin-table-customer { color: rgba(255,255,255,0.8); }
+.admin-table-product { color: $admin-text-muted; }
+.admin-table-amount { font-weight: $fw-semibold; color: rgba(255,255,255,0.85); }
+.admin-table-date { color: $admin-text-muted; }
+
+.admin-status {
+  display: inline-flex;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: $fw-semibold;
+  letter-spacing: 0.05em;
+  width: fit-content;
+
+  &--pending    { background: rgba(200, 150, 30, 0.15); color: #C8961E; }
+  &--processing { background: rgba(60, 120, 200, 0.15); color: #6AA3E0; }
+  &--shipped    { background: rgba(100, 70, 200, 0.15); color: #9B80E0; }
+  &--delivered  { background: rgba(60, 180, 100, 0.15); color: #4CAF73; }
+}
+
+// Utility buttons
+.admin-btn {
+  padding: 0.5rem 1rem;
+  font-family: $font-ui;
+  font-size: $fs-xs;
+  font-weight: $fw-semibold;
+  letter-spacing: $ls-wider;
+  text-transform: uppercase;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+
+  &--primary {
+    background: $color-copper;
+    color: #F8F4ED;
+
+    &:hover { background: color.adjust($color-copper, $lightness: -8%); }
+  }
+
+  &--ghost {
+    background: rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.5);
+    border: 1px solid $admin-border;
+
+    &:hover { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.8); }
+  }
+}
+
+.admin-pill {
+  padding: 0.3rem 0.75rem;
+  font-family: $font-ui;
+  font-size: $fs-xs;
+  font-weight: $fw-medium;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  background: rgba(255,255,255,0.05);
+  color: rgba(255,255,255,0.4);
+  transition: all 0.2s;
+
+  &--active {
+    background: rgba($color-copper, 0.15);
+    color: $color-copper;
+  }
+}
+
+.admin-link {
+  font-family: $font-ui;
+  font-size: $fs-xs;
+  font-weight: $fw-medium;
+  color: $color-copper;
+  text-decoration: none;
+  letter-spacing: $ls-wide;
+
+  &:hover { color: color.adjust($color-copper, $lightness: 15%); }
+}

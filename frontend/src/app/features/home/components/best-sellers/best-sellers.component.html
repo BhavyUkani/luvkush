@@ -1,0 +1,36 @@
+﻿<section class="bs" aria-labelledby="bs-heading">
+
+  <div class="bs__header reveal">
+    <div>
+      <h2 class="bs__title" id="bs-heading">Bestsellers</h2>
+      <p class="bs__sub">Our most loved Ayurvedic formulations</p>
+    </div>
+    <a class="bs__view-all" routerLink="/shop" [queryParams]="{ sort: 'sales_count' }">
+      View All
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M3 7H11M8 4L11 7L8 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+
+  @if (loading()) {
+    <div class="bs__grid">
+      @for (n of [1,2,3,4,5,6,7,8]; track n) {
+        <div class="bs__skel skel-block"></div>
+      }
+    </div>
+  }
+
+  @if (!loading() && products().length > 0) {
+    <div class="bs__grid reveal">
+      @for (product of products(); track trackById($index, product)) {
+        <lk-product-card [product]="product" />
+      }
+    </div>
+  }
+
+  @if (!loading() && products().length === 0) {
+    <p class="bs__empty">No products available right now.</p>
+  }
+
+</section>

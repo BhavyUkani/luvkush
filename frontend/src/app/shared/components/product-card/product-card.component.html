@@ -1,0 +1,130 @@
+<article class="pc" [class.pc--added]="isAdded()">
+
+  <!-- Image + overlays -->
+  <div class="pc__image-wrap">
+    <a [routerLink]="['/products', product.slug]" class="pc__image-link" [attr.aria-label]="product.name" tabindex="-1">
+      <img
+        class="pc__image pc__image--primary"
+        [src]="imageUrl"
+        [alt]="product.name"
+        loading="lazy"
+        width="400"
+        height="400"
+        (error)="$any($event.target).src='/assets/images/placeholder.webp'"
+      />
+      @if (hoverImage) {
+        <img
+          class="pc__image pc__image--hover"
+          [src]="hoverImage"
+          [alt]="product.name + ' alternate view'"
+          loading="lazy"
+          width="400"
+          height="400"
+          aria-hidden="true"
+          (error)="$any($event.target).style.display='none'"
+        />
+      }
+    </a>
+
+    <!-- Badges top-left -->
+    <div class="pc__badges">
+      @if (product.is_bestseller) {
+        <span class="pc__badge pc__badge--bs">Bestseller</span>
+      }
+      @if (product.is_new) {
+        <span class="pc__badge pc__badge--new">New</span>
+      }
+      @if (discount >= 10) {
+        <span class="pc__badge pc__badge--sale">{{ discount }}% off</span>
+      }
+      @if (isLowStock) {
+        <span class="pc__badge pc__badge--stock">Only {{ stockCount }} left</span>
+      }
+    </div>
+
+    <!-- Wishlist top-right -->
+    <button
+      class="pc__wish"
+      [class.pc__wish--active]="wishlist.isWishlisted(product.id)"
+      (click)="toggleWishlist($event)"
+      [attr.aria-label]="wishlist.isWishlisted(product.id) ? 'Remove from wishlist' : 'Add to wishlist'">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M8 14S2 10 2 5.5A3.5 3.5 0 0 1 8 3.5 3.5 3.5 0 0 1 14 5.5C14 10 8 14 8 14Z"
+          stroke="currentColor" stroke-width="1.3"
+          [attr.fill]="wishlist.isWishlisted(product.id) ? 'currentColor' : 'none'"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Info -->
+  <div class="pc__info">
+    @if (product.category_name) {
+      <span class="pc__category">{{ product.category_name }}</span>
+    }
+
+    <a [routerLink]="['/products', product.slug]" class="pc__name-link">
+      <h3 class="pc__name">{{ product.name }}</h3>
+    </a>
+
+    <!-- Rating -->
+    @if (product.rating_avg && (product.rating_count ?? 0) > 0) {
+      <div class="pc__rating" [attr.aria-label]="product.rating_avg + ' out of 5'">
+        <div class="pc__stars" role="img">
+          @for (s of stars; track s) {
+            <svg class="pc__star" [class.pc__star--on]="s <= ratingInt"
+              width="11" height="11" viewBox="0 0 12 12" fill="none">
+              <path d="M6 1L7.5 4.5H11.5L8.5 6.8L9.5 10.5L6 8.3L2.5 10.5L3.5 6.8L0.5 4.5H4.5L6 1Z"
+                stroke="currentColor" stroke-width="0.8"
+                [attr.fill]="s <= ratingInt ? 'currentColor' : 'none'"/>
+            </svg>
+          }
+        </div>
+        <span class="pc__rating-count">({{ product.rating_count }})</span>
+      </div>
+    }
+
+    <!-- Price -->
+    <div class="pc__price-row">
+      <span class="pc__price">₹{{ product.price | number:'1.0-0' }}</span>
+      @if (product.mrp && product.mrp > product.price) {
+        <span class="pc__mrp">₹{{ product.mrp | number:'1.0-0' }}</span>
+        @if (discount >= 10) {
+          <span class="pc__discount">{{ discount }}% off</span>
+        }
+      }
+    </div>
+
+    <!-- Payment mode indicator -->
+    @if (paymentLabel) {
+      <div class="pc__payment-label">
+        <svg width="9" height="9" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+          <rect x="1" y="2.5" width="8" height="6" rx="1" stroke="currentColor" stroke-width="0.9"/>
+          <path d="M1 4.5h8" stroke="currentColor" stroke-width="0.9"/>
+        </svg>
+        {{ paymentLabel }}
+      </div>
+    }
+  </div>
+
+  <!-- Cart button -->
+  <button
+    class="pc__cart"
+    [class.pc__cart--added]="isAdded()"
+    (click)="addToCart($event)"
+    [attr.aria-label]="'Add ' + product.name + ' to cart'">
+    @if (isAdded()) {
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M2 7L5.5 10.5L12 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Added
+    } @else {
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M1 1H2.5L4.5 10H11.5L13 5H4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="5.5" cy="12" r="1" fill="currentColor"/>
+        <circle cx="10.5" cy="12" r="1" fill="currentColor"/>
+      </svg>
+      Add to Cart
+    }
+  </button>
+
+</article>

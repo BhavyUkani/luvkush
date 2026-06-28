@@ -1,0 +1,228 @@
+@use "../../../../styles/variables" as *;
+@use "../account-shared";
+
+// ─── Welcome Banner ──────────────────────────────────────────
+.db-welcome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, $color-forest-deep 0%, $color-ayurvedic-green 100%);
+  border-radius: 16px;
+  padding: 2rem 2.25rem;
+  margin-bottom: 1.75rem;
+  overflow: hidden;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: 100px;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: rgba($color-copper-gold, 0.08);
+    pointer-events: none;
+  }
+}
+
+.db-welcome__text { position: relative; z-index: 1; }
+
+.db-welcome__eyebrow {
+  font-family: $font-display;
+  font-size: $fs-xs;
+  letter-spacing: $ls-widest;
+  text-transform: uppercase;
+  color: rgba($color-copper-gold, 0.85);
+  margin: 0 0 0.5rem;
+}
+
+.db-welcome__name {
+  font-family: $font-heading;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 500;
+  color: $color-ivory-warm;
+  line-height: 1.25;
+  margin: 0 0 0.375rem;
+
+  span {
+    color: $color-gold-light;
+    font-style: italic;
+  }
+}
+
+.db-welcome__sub {
+  font-family: $font-body;
+  font-size: $fs-sm;
+  color: rgba($color-ivory-warm, 0.65);
+  margin: 0;
+}
+
+.db-welcome__leaf {
+  font-size: 4rem;
+  opacity: 0.25;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-left: 1rem;
+}
+
+// ─── Stats Grid ───────────────────────────────────────────────
+.db-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+
+  @media (max-width: #{$bp-md - 1px}) { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 420px)            { grid-template-columns: 1fr; }
+}
+
+.db-stat {
+  background: $color-white;
+  border: 1px solid $color-border-base;
+  border-radius: 14px;
+  padding: 1.375rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+  }
+
+  &__icon-wrap {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  &__body { min-width: 0; }
+
+  &__val {
+    font-family: $font-heading;
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: $color-text-primary;
+    margin: 0;
+    line-height: 1.1;
+  }
+
+  &__label {
+    font-family: $font-body;
+    font-size: $fs-xs;
+    color: $color-text-muted;
+    margin: 0.25rem 0 0;
+    white-space: nowrap;
+  }
+
+  &--orders .db-stat__icon-wrap { background: rgba($color-herbal-green, 0.1); svg { color: $color-herbal-green; } }
+  &--wishlist .db-stat__icon-wrap { background: rgba(168, 66, 101, 0.1); svg { color: #A84265; } }
+  &--address .db-stat__icon-wrap { background: rgba($color-gold, 0.12); svg { color: $color-gold-dark; } }
+  &--spent .db-stat__icon-wrap { background: rgba($color-forest-deep, 0.08); svg { color: $color-forest-deep; } }
+}
+
+// ─── Quick Links ──────────────────────────────────────────────
+.db-section-title {
+  font-family: $font-heading;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: $color-text-primary;
+  margin: 0 0 1rem;
+}
+
+.db-links {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.875rem;
+
+  @media (max-width: #{$bp-md - 1px}) { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 420px)            { grid-template-columns: 1fr; }
+}
+
+.db-link {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 1rem 1.125rem;
+  background: $color-white;
+  border: 1.5px solid $color-border-base;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    border-color: $color-herbal-green;
+    box-shadow: 0 4px 16px rgba($color-herbal-green, 0.1);
+    transform: translateY(-1px);
+
+    .db-link__arrow { transform: translateX(3px); }
+  }
+
+  &__icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    &--green  { background: rgba($color-herbal-green, 0.1); svg { color: $color-herbal-green; } }
+    &--rose   { background: rgba(168, 66, 101, 0.1); svg { color: #A84265; } }
+    &--amber  { background: rgba($color-gold, 0.12); svg { color: $color-gold-dark; } }
+    &--slate  { background: rgba(80, 80, 100, 0.08); svg { color: #505064; } }
+    &--forest { background: rgba($color-forest-deep, 0.1); svg { color: $color-forest-deep; } }
+  }
+
+  &__text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  &__label {
+    font-family: $font-body;
+    font-size: $fs-sm;
+    font-weight: 600;
+    color: $color-text-primary;
+    display: block;
+  }
+
+  &__sub {
+    font-family: $font-body;
+    font-size: 0.6875rem;
+    color: $color-text-muted;
+    display: block;
+  }
+
+  &__arrow {
+    color: $color-text-muted;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+
+  &--primary {
+    background: linear-gradient(135deg, $color-forest-deep 0%, $color-herbal-green 100%);
+    border-color: transparent;
+    box-shadow: 0 4px 16px rgba($color-forest-deep, 0.2);
+
+    .db-link__label { color: $color-white; }
+    .db-link__sub   { color: rgba($color-white, 0.6); }
+    .db-link__arrow { color: rgba($color-white, 0.7); }
+    .db-link__icon--forest { background: rgba($color-white, 0.12); svg { color: $color-white; } }
+
+    &:hover {
+      border-color: transparent;
+      box-shadow: 0 6px 24px rgba($color-forest-deep, 0.3);
+      transform: translateY(-2px);
+    }
+  }
+}

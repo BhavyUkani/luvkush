@@ -1,0 +1,38 @@
+# Logs
+*.log
+logs/
+**/logs/**
+backend-run.log
+
+# Dependency directories
+**/node_modules/
+
+# Build outputs
+dist/
+**/dist/
+.angular/
+**/.angular/
+
+# Environments / Secrets
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# IDE / Editor configuration
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.bak
+*.tmp
+*.temp
+
+# System files
+.DS_Store
+Thumbs.db

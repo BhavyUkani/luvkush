@@ -1,0 +1,425 @@
+@use "../../../../styles/variables" as *;
+
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, $color-bg-muted 25%, $color-bg-subtle 50%, $color-bg-muted 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+:host { display: block; background: $color-bg-page; }
+
+// ─── Header ───────────────────────────────────────────────────
+.coll-header {
+  background: linear-gradient(135deg, $color-forest-deep 0%, $color-ayurvedic-green 100%);
+  border-bottom: none;
+  padding: 2.25rem $section-padding-x 2rem;
+
+  &__inner { max-width: 1200px; margin: 0 auto; }
+
+  &__title {
+    font-family: $font-heading;
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 600;
+    color: $color-ivory-warm;
+    margin: 0.5rem 0 0;
+    letter-spacing: -0.01em;
+  }
+
+  &__desc {
+    font-size: 0.9375rem;
+    color: rgba($color-ivory-warm, 0.7);
+    margin: 0.5rem 0 0;
+    max-width: 600px;
+  }
+}
+
+.coll-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+  color: rgba($color-ivory-warm, 0.6);
+
+  a { color: rgba($color-ivory-warm, 0.6); text-decoration: none; &:hover { color: $color-ivory-warm; } }
+  span:last-child { color: rgba($color-ivory-warm, 0.85); }
+}
+
+// ─── Body Layout ──────────────────────────────────────────────
+.coll-body {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem $section-padding-x 4rem;
+  display: grid;
+  grid-template-columns: 248px 1fr;
+  gap: 2.5rem;
+  align-items: start;
+
+  @media (max-width: #{$bp-lg - 1px}) { grid-template-columns: 1fr; }
+}
+
+// ─── Sidebar Overlay (mobile) ──────────────────────────────────
+.coll-sidebar-overlay {
+  display: none;
+  @media (max-width: #{$bp-lg - 1px}) {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 200;
+  }
+}
+
+// ─── Sidebar ──────────────────────────────────────────────────
+.coll-sidebar {
+  position: sticky;
+  top: 112px;
+  background: $color-white;
+  border: 1px solid $color-border-base;
+  border-radius: 10px;
+  padding: 1.5rem;
+
+  @media (max-width: #{$bp-lg - 1px}) {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: min(320px, 90vw);
+    z-index: 300;
+    border-radius: 0;
+    overflow-y: auto;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    top: 0;
+
+    &--open { transform: translateX(0); }
+  }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+
+  &__title { font-size: 1rem; font-weight: 700; color: $color-text-primary; margin: 0; }
+
+  &__close {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: $color-text-muted;
+    padding: 4px;
+    &:hover { color: $color-text-primary; }
+    @media (max-width: #{$bp-lg - 1px}) { display: flex; }
+  }
+}
+
+// ─── Filter sections ───────────────────────────────────────────
+.coll-filter {
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid $color-border-base;
+
+  &__label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: $color-text-muted;
+    margin: 0 0 0.875rem;
+  }
+
+  &__list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: $color-text-secondary;
+
+    input { accent-color: $color-herbal-green; flex-shrink: 0; }
+  }
+
+  &__name { flex: 1; }
+
+  &__count {
+    font-size: 0.75rem;
+    color: $color-text-muted;
+    background: $color-bg-subtle;
+    padding: 1px 6px;
+    border-radius: 10px;
+  }
+
+  &__clear {
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.625rem;
+    background: none;
+    border: 1px solid $color-border-base;
+    border-radius: 6px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: $color-text-muted;
+    cursor: pointer;
+    transition: border-color 0.18s, color 0.18s;
+
+    &:hover:not(:disabled) { border-color: $color-herbal-green; color: $color-herbal-green; }
+    &:disabled { opacity: 0.4; cursor: not-allowed; }
+  }
+}
+
+.coll-price-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.coll-price-field {
+  flex: 1;
+
+  label { display: block; font-size: 0.75rem; color: $color-text-muted; margin-bottom: 0.25rem; }
+
+  input {
+    width: 100%;
+    padding: 0.5rem 0.625rem;
+    border: 1.5px solid $color-border-base;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    color: $color-text-primary;
+    outline: none;
+    box-sizing: border-box;
+    &:focus { border-color: $color-herbal-green; }
+  }
+}
+
+.coll-price-sep { color: $color-text-muted; font-size: 0.875rem; padding-bottom: 0.5rem; }
+
+// ─── Main ─────────────────────────────────────────────────────
+.coll-main { min-width: 0; }
+
+// ─── Toolbar ──────────────────────────────────────────────────
+.coll-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+
+  &__left, &__right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  &__filter-btn {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.875rem;
+    border: 1.5px solid $color-border-base;
+    border-radius: 6px;
+    background: $color-white;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $color-text-primary;
+    cursor: pointer;
+    position: relative;
+    transition: border-color 0.18s;
+
+    &:hover { border-color: $color-herbal-green; }
+
+    @media (max-width: #{$bp-lg - 1px}) { display: flex; }
+  }
+
+  &__badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: $color-herbal-green;
+    color: $color-white;
+    font-size: 0.625rem;
+    font-weight: 700;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__count {
+    font-size: 0.875rem;
+    color: $color-text-muted;
+    margin: 0;
+    strong { color: $color-text-primary; }
+  }
+}
+
+.coll-view-toggle { display: flex; border: 1.5px solid $color-border-base; border-radius: 6px; overflow: hidden; }
+
+.coll-view-btn {
+  width: 36px;
+  height: 34px;
+  border: none;
+  background: $color-white;
+  color: $color-text-muted;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+
+  &--active { background: $color-herbal-green; color: $color-white; }
+
+  &:not(&--active):hover { background: $color-bg-subtle; }
+}
+
+.coll-sort {
+  padding: 0.5rem 2rem 0.5rem 0.75rem;
+  border: 1.5px solid $color-border-base;
+  border-radius: 6px;
+  background: $color-white;
+  font-size: 0.875rem;
+  color: $color-text-primary;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  min-width: 180px;
+
+  &:focus { border-color: $color-herbal-green; }
+}
+
+// ─── Search ───────────────────────────────────────────────────
+.coll-search {
+  position: relative;
+  margin-bottom: 1.5rem;
+
+  &__icon {
+    position: absolute;
+    left: 0.875rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $color-text-muted;
+    pointer-events: none;
+  }
+
+  &__input {
+    width: 100%;
+    padding: 0.75rem 2.75rem;
+    border: 1.5px solid $color-border-base;
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    color: $color-text-primary;
+    outline: none;
+    box-sizing: border-box;
+    background: $color-white;
+    transition: border-color 0.18s;
+
+    &::placeholder { color: $color-text-muted; }
+    &:focus { border-color: $color-herbal-green; }
+  }
+
+  &__clear {
+    position: absolute;
+    right: 0.875rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: $color-text-muted;
+    display: flex;
+    &:hover { color: $color-text-primary; }
+  }
+}
+
+// ─── Product Grid ─────────────────────────────────────────────
+.coll-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+
+  @media (max-width: #{$bp-md - 1px}) { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 420px) { grid-template-columns: 1fr; }
+
+  &--list {
+    grid-template-columns: 1fr !important;
+
+    lk-product-card {
+      display: block;
+    }
+  }
+}
+
+// ─── Skeleton ─────────────────────────────────────────────────
+.coll-skeleton {
+  border-radius: 10px;
+  aspect-ratio: 3 / 4;
+}
+
+// ─── Empty state ──────────────────────────────────────────────
+.coll-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 5rem 2rem;
+  text-align: center;
+  color: $color-text-muted;
+
+  h3 { font-size: 1.25rem; font-weight: 600; color: $color-text-primary; margin: 0; }
+  p  { font-size: 0.9375rem; margin: 0; }
+
+  &__reset {
+    margin-top: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    border: 1.5px solid $color-border-base;
+    background: $color-white;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $color-herbal-green;
+    cursor: pointer;
+    transition: border-color 0.18s;
+    &:hover { border-color: $color-herbal-green; }
+  }
+}
+
+// ─── Pagination ───────────────────────────────────────────────
+.coll-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 3rem;
+}
+
+.coll-page-btn {
+  min-width: 40px;
+  height: 40px;
+  padding: 0 0.5rem;
+  border: 1.5px solid $color-border-base;
+  border-radius: 6px;
+  background: $color-white;
+  font-size: 0.875rem;
+  color: $color-text-secondary;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.18s, background 0.18s, color 0.18s;
+
+  &:hover:not(:disabled) { border-color: $color-herbal-green; color: $color-herbal-green; }
+  &--active { background: $color-herbal-green; border-color: $color-herbal-green; color: $color-white; font-weight: 600; }
+  &:disabled { opacity: 0.4; cursor: not-allowed; }
+}

@@ -1,0 +1,115 @@
+<div class="ct-page">
+  <div class="ct-container">
+    <h1 class="ct-title">Shopping Cart
+      @if (cart.count()) { <span class="ct-count">({{ cart.count() }} items)</span> }
+    </h1>
+
+    @if (cart.isEmpty()) {
+      <div class="ct-empty">
+        <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <h2>Your cart is empty</h2>
+        <p>Looks like you haven't added anything yet.</p>
+        <a routerLink="/shop" class="ct-shop-btn">Continue Shopping</a>
+      </div>
+    } @else {
+      <div class="ct-layout">
+        <!-- Items -->
+        <div class="ct-items">
+          @for (item of cart.items(); track item.id) {
+            <div class="ct-item">
+              <a [routerLink]="['/products', item.slug]" class="ct-item__img-wrap">
+                <img [src]="item.image || '/assets/images/placeholder.webp'" [alt]="item.name" class="ct-item__img" loading="lazy" />
+              </a>
+              <div class="ct-item__info">
+                <a [routerLink]="['/products', item.slug]" class="ct-item__name">{{ item.name }}</a>
+                @if (item.variant) { <p class="ct-item__variant">{{ item.variant }}</p> }
+                <div class="ct-item__pricing">
+                  <span class="ct-item__price">₹{{ item.price | number }}</span>
+                  @if (item.mrp > item.price) { <span class="ct-item__mrp">₹{{ item.mrp | number }}</span> }
+                </div>
+              </div>
+              <div class="ct-item__qty">
+                <button class="ct-qty-btn" (click)="decrease(item)">−</button>
+                <span class="ct-qty-val">{{ item.quantity }}</span>
+                <button class="ct-qty-btn" (click)="increase(item)">+</button>
+              </div>
+              <div class="ct-item__subtotal">₹{{ (item.price * item.quantity) | number }}</div>
+              <button class="ct-item__remove" (click)="remove(item)" aria-label="Remove item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            </div>
+          }
+
+          <div class="ct-continue">
+            <a routerLink="/shop" class="ct-continue-link">← Continue Shopping</a>
+          </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="ct-summary">
+          <h2 class="ct-summary__title">Order Summary</h2>
+
+          <div class="ct-summary__row">
+            <span>Subtotal</span>
+            <span>₹{{ cart.subtotal() | number }}</span>
+          </div>
+          @if (cart.savings() > 0) {
+            <div class="ct-summary__row ct-summary__row--savings">
+              <span>You save</span>
+              <span>−₹{{ cart.savings() | number }}</span>
+            </div>
+          }
+          @if (discount > 0) {
+            <div class="ct-summary__row ct-summary__row--coupon">
+              <span>Coupon discount</span>
+              <span>−₹{{ discount | number }}</span>
+            </div>
+          }
+          <div class="ct-summary__row ct-summary__row--shipping">
+            <span>Shipping</span>
+            <span>{{ total >= 499 ? 'FREE' : '₹49' }}</span>
+          </div>
+          <div class="ct-summary__row ct-summary__row--total">
+            <span>Total</span>
+            <span>₹{{ (total < 499 ? total + 49 : total) | number }}</span>
+          </div>
+          <div class="ct-shipping-bar">
+            <div class="ct-shipping-bar__track">
+              <div class="ct-shipping-bar__fill" [style.width.%]="shippingProgress"></div>
+            </div>
+            @if (total < 499) {
+              <p class="ct-free-shipping">Add <strong>₹{{ (499 - total) | number:'1.0-0' }}</strong> more for free shipping</p>
+            } @else {
+              <p class="ct-free-shipping ct-free-shipping--done">✓ Free shipping unlocked!</p>
+            }
+          </div>
+
+          <!-- Coupon -->
+          @if (!cart.appliedCoupon()) {
+            <div class="ct-coupon">
+              <input type="text" class="ct-coupon__input" placeholder="Enter coupon code"
+                [value]="couponCode()" (input)="couponCode.set($any($event.target).value)" />
+              <button class="ct-coupon__apply" (click)="applyCoupon()" [disabled]="couponLoading()">
+                @if (couponLoading()) { … } @else { Apply }
+              </button>
+            </div>
+            @if (couponError()) { <p class="ct-coupon__error">{{ couponError() }}</p> }
+          } @else {
+            <div class="ct-coupon ct-coupon--applied">
+              <span class="ct-coupon__code">{{ cart.appliedCoupon().code }} applied!</span>
+              <button class="ct-coupon__remove" (click)="removeCoupon()">Remove</button>
+            </div>
+          }
+
+          <button class="ct-checkout-btn" (click)="checkout()">Proceed to Checkout</button>
+
+          <div class="ct-trust">
+            <span>🔒 Secure Checkout</span>
+            <span>🚚 Fast Delivery</span>
+            <span>↩ Easy Returns</span>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

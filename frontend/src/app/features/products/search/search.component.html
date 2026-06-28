@@ -1,0 +1,86 @@
+<div class="srch">
+  <!-- Search bar -->
+  <div class="srch__bar-wrap">
+    <form class="srch__bar" (submit)="onSubmit(); $event.preventDefault()" role="search">
+      <svg class="srch__bar-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input
+        type="search"
+        class="srch__input"
+        [value]="query()"
+        (input)="onInput($any($event.target).value)"
+        placeholder="Search for products, ingredients…"
+        aria-label="Search products"
+        autofocus />
+      @if (query()) {
+        <button type="button" class="srch__clear" (click)="query.set(''); results.set([]); searched.set(false)" aria-label="Clear search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      }
+      <button type="submit" class="srch__submit">Search</button>
+    </form>
+  </div>
+
+  <div class="srch__body">
+    <!-- Pre-search state: history + trending -->
+    @if (!searched()) {
+      <div class="srch__pre">
+        @if (history().length > 0) {
+          <div class="srch__section">
+            <div class="srch__section-head">
+              <h3>Recent Searches</h3>
+              <button (click)="clearHistory()">Clear</button>
+            </div>
+            <div class="srch__chips">
+              @for (h of history(); track h) {
+                <button class="srch__chip srch__chip--history" (click)="searchHistory(h)">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  {{ h }}
+                </button>
+              }
+            </div>
+          </div>
+        }
+        <div class="srch__section">
+          <h3 class="srch__section-head">Trending</h3>
+          <div class="srch__chips">
+            @for (t of TRENDING; track t) {
+              <button class="srch__chip" (click)="searchTrend(t)">{{ t }}</button>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Loading -->
+    @if (loading()) {
+      <div class="srch__grid">
+        @for (_ of [1,2,3,4,5,6]; track $index) {
+          <div class="srch__skeleton shimmer"></div>
+        }
+      </div>
+    }
+
+    <!-- Results -->
+    @if (!loading() && searched()) {
+      @if (results().length === 0) {
+        <div class="srch__empty">
+          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <h3>No results for "{{ query() }}"</h3>
+          <p>Check your spelling or try a more general term</p>
+          <div class="srch__chips" style="justify-content:center;margin-top:1rem">
+            @for (t of TRENDING; track t) {
+              <button class="srch__chip" (click)="searchTrend(t)">{{ t }}</button>
+            }
+          </div>
+        </div>
+      } @else {
+        <p class="srch__count"><strong>{{ results().length }}</strong> results for "{{ query() }}"</p>
+        <div class="srch__grid">
+          @for (p of results(); track p.id) {
+            <lk-product-card [product]="p" />
+          }
+        </div>
+      }
+    }
+  </div>
+</div>
